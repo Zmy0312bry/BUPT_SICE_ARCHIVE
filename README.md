@@ -33,6 +33,9 @@
 ## 联系我们 📬
 
 有任何问题、建议或想法，请随时通过 GitHub Issues 联系我们！我们会认真对待每一条反馈，并尽快回复你。让我们共同努力，创造更美好的学习环境！
+一下是我个人的Email和Wechat👇
+email：zhaomingyuan@bupt.edu.cn
+Wechat:15624990312
 
 ---
 
