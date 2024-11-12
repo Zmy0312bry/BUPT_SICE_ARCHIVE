@@ -1,6 +1,10 @@
 @echo off
-
-
+:: 检查iverilog命令是否可用
+where iverilog >nul 2>&1
+if errorlevel 1 (
+    echo iverilog命令不可用，请确保iverilog已安装并添加到PATH环境变量中。
+    goto end
+)
 echo 请选择对应的仿真波形：
 echo 1. counter
 echo 2. binary_to_bcd
