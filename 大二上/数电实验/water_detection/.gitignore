@@ -1,0 +1,4 @@
+*.vcd
+simulation/
+*.vvp
+simulation
