@@ -1,0 +1,6 @@
+[submodule "大二上/数电实验/water_detection"]
+	path = 大二上/数电实验/water_detection
+	url = https://github.com/zhao-leo/2024BUPT_WATER_DETECTION.git
+[submodule "大二上/数电实验/air_conditioner"]
+	path = 大二上/数电实验/air_conditioner
+	url = https://github.com/YoungerBUPT2023/2024BUPT-Conditioner.git
