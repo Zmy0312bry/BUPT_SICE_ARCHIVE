@@ -4,3 +4,6 @@
 [submodule "大二上/数电实验/air_conditioner"]
 	path = 大二上/数电实验/air_conditioner
 	url = https://github.com/YoungerBUPT2023/2024BUPT-Conditioner.git
+[submodule "大二上/数电实验/fan"]
+	path = 大二上/数电实验/fan
+	url = https://github.com/zhao-leo/2024BUPT_FAN.git
