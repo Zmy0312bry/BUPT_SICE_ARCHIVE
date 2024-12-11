@@ -71,3 +71,7 @@ WeChat:Zryake
 PS:
 
 **[zhao-leo的个人博客](https://www.zhaocloud.work)**
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Zmy0312bry/BUPT_SICE_ARCHIVE&type=Date)](https://star-history.com/#Zmy0312bry/BUPT_SICE_ARCHIVE&Date)
