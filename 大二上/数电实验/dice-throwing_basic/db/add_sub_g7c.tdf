@@ -1,0 +1,45 @@
+--lpm_add_sub CARRY_CHAIN="MANUAL" CARRY_CHAIN_LENGTH=48 DEVICE_FAMILY="MAX II" LPM_DIRECTION="SUB" LPM_WIDTH=3 cout dataa datab result
+--VERSION_BEGIN 23.1 cbx_cycloneii 2024:05:14:17:57:38:SC cbx_lpm_add_sub 2024:05:14:17:57:38:SC cbx_mgl 2024:05:14:17:57:46:SC cbx_nadder 2024:05:14:17:57:38:SC cbx_stratix 2024:05:14:17:57:38:SC cbx_stratixii 2024:05:14:17:57:38:SC  VERSION_END
+
+
+-- Copyright (C) 2024  Intel Corporation. All rights reserved.
+--  Your use of Intel Corporation's design tools, logic functions 
+--  and other software and tools, and any partner logic 
+--  functions, and any output files from any of the foregoing 
+--  (including device programming or simulation files), and any 
+--  associated documentation or information are expressly subject 
+--  to the terms and conditions of the Intel Program License 
+--  Subscription Agreement, the Intel Quartus Prime License Agreement,
+--  the Intel FPGA IP License Agreement, or other applicable license
+--  agreement, including, without limitation, that your use is for
+--  the sole purpose of programming logic devices manufactured by
+--  Intel and sold by Intel or its authorized distributors.  Please
+--  refer to the applicable agreement for further details, at
+--  https://fpgasoftware.intel.com/eula.
+
+
+FUNCTION carry_sum (cin, sin)
+RETURNS ( cout, sout);
+
+--synthesis_resources = lut 3 
+SUBDESIGN add_sub_g7c
+( 
+	cout	:	output;
+	dataa[2..0]	:	input;
+	datab[2..0]	:	input;
+	result[2..0]	:	output;
+) 
+VARIABLE 
+	add_sub_cella[2..0] : carry_sum;
+	datab_node[2..0]	: WIRE;
+	main_cin_wire	: WIRE;
+
+BEGIN 
+	add_sub_cella[].cin = ( ((dataa[2..2] & datab_node[2..2]) # ((dataa[2..2] # datab_node[2..2]) & add_sub_cella[1].cout)), ((dataa[1..1] & datab_node[1..1]) # ((dataa[1..1] # datab_node[1..1]) & add_sub_cella[0].cout)), ((dataa[0..0] & datab_node[0..0]) # ((dataa[0..0] # datab_node[0..0]) & main_cin_wire)));
+	add_sub_cella[].sin = ( ((dataa[2..2] $ datab_node[2..2]) $ add_sub_cella[1].cout), ((dataa[1..1] $ datab_node[1..1]) $ add_sub_cella[0].cout), ((dataa[0..0] $ datab_node[0..0]) $ main_cin_wire));
+	cout = add_sub_cella[2].cout;
+	datab_node[] = (! datab[]);
+	main_cin_wire = B"1";
+	result[] = add_sub_cella[].sout;
+END;
+--VALID FILE

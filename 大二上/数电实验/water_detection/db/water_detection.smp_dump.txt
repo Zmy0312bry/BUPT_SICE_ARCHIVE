@@ -1,0 +1,38 @@
+
+State Machine - |water_detection|key_input:key_input1|key_pre
+Name key_pre.1111 key_pre.1110 key_pre.1101 key_pre.1100 key_pre.1011 key_pre.1010 key_pre.1001 key_pre.1000 key_pre.0111 key_pre.0110 key_pre.0101 key_pre.0100 key_pre.0011 key_pre.0010 key_pre.0001 key_pre.0000 
+key_pre.0000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+key_pre.0001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+key_pre.0010 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+key_pre.0011 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+key_pre.0100 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+key_pre.0101 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+key_pre.0110 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+key_pre.0111 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+key_pre.1000 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+key_pre.1001 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+key_pre.1010 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+key_pre.1011 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+key_pre.1100 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+key_pre.1101 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 
+key_pre.1110 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+key_pre.1111 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+
+State Machine - |water_detection|key_input:key_input1|key_unconfirmed
+Name key_unconfirmed.1111 key_unconfirmed.1110 key_unconfirmed.1101 key_unconfirmed.1100 key_unconfirmed.1011 key_unconfirmed.1010 key_unconfirmed.1001 key_unconfirmed.1000 key_unconfirmed.0111 key_unconfirmed.0110 key_unconfirmed.0101 key_unconfirmed.0100 key_unconfirmed.0011 key_unconfirmed.0010 key_unconfirmed.0001 key_unconfirmed.0000 
+key_unconfirmed.0000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+key_unconfirmed.0001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+key_unconfirmed.0010 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+key_unconfirmed.0011 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+key_unconfirmed.0100 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+key_unconfirmed.0101 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+key_unconfirmed.0110 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+key_unconfirmed.0111 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+key_unconfirmed.1000 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+key_unconfirmed.1001 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+key_unconfirmed.1010 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+key_unconfirmed.1011 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+key_unconfirmed.1100 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+key_unconfirmed.1101 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 
+key_unconfirmed.1110 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+key_unconfirmed.1111 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 

@@ -1,0 +1,148 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2024  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and any partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details, at
+# https://fpgasoftware.intel.com/eula.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 23.1std.1 Build 993 05/14/2024 SC Lite Edition
+# Date created = 11:05:59  November 14, 2024
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		water_detection_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Intel recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "MAX II"
+set_global_assignment -name DEVICE EPM1270T144C5
+set_global_assignment -name TOP_LEVEL_ENTITY water_detection
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 23.1STD.1
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "11:05:59  NOVEMBER 14, 2024"
+set_global_assignment -name LAST_QUARTUS_VERSION "23.1std.1 Lite Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name DEVICE_FILTER_PACKAGE TQFP
+set_global_assignment -name DEVICE_FILTER_PIN_COUNT 144
+set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 5
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR "-1"
+set_global_assignment -name POWER_EXT_SUPPLY_VOLTAGE_TO_REGULATOR 3.3V
+set_global_assignment -name EDA_SIMULATION_TOOL "Questa Intel FPGA (Verilog)"
+set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_timing
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
+set_location_assignment PIN_51 -to dp
+set_location_assignment PIN_52 -to segment7[0]
+set_location_assignment PIN_53 -to segment7[1]
+set_location_assignment PIN_55 -to segment7[2]
+set_location_assignment PIN_57 -to segment7[3]
+set_location_assignment PIN_58 -to segment7[4]
+set_location_assignment PIN_59 -to segment7[5]
+set_location_assignment PIN_62 -to segment7[6]
+set_location_assignment PIN_63 -to select[0]
+set_location_assignment PIN_66 -to select[1]
+set_location_assignment PIN_67 -to select[2]
+set_location_assignment PIN_68 -to select[3]
+set_location_assignment PIN_69 -to select[4]
+set_location_assignment PIN_70 -to select[5]
+set_location_assignment PIN_30 -to select[6]
+set_location_assignment PIN_31 -to select[7]
+set_location_assignment PIN_61 -to btn0
+set_location_assignment PIN_124 -to btn7
+set_location_assignment PIN_60 -to beep
+set_location_assignment PIN_18 -to clk
+set_location_assignment PIN_8 -to row[7]
+set_location_assignment PIN_7 -to row[6]
+set_location_assignment PIN_6 -to row[5]
+set_location_assignment PIN_5 -to row[4]
+set_location_assignment PIN_4 -to row[3]
+set_location_assignment PIN_3 -to row[2]
+set_location_assignment PIN_2 -to row[1]
+set_location_assignment PIN_1 -to row[0]
+set_location_assignment PIN_38 -to green_led[0]
+set_location_assignment PIN_39 -to green_led[1]
+set_location_assignment PIN_40 -to green_led[2]
+set_location_assignment PIN_41 -to green_led[3]
+set_location_assignment PIN_42 -to green_led[4]
+set_location_assignment PIN_43 -to green_led[5]
+set_location_assignment PIN_44 -to green_led[6]
+set_location_assignment PIN_45 -to green_led[7]
+set_location_assignment PIN_22 -to red_led[7]
+set_location_assignment PIN_21 -to red_led[6]
+set_location_assignment PIN_16 -to red_led[5]
+set_location_assignment PIN_15 -to red_led[4]
+set_location_assignment PIN_14 -to red_led[3]
+set_location_assignment PIN_13 -to red_led[2]
+set_location_assignment PIN_12 -to red_led[1]
+set_location_assignment PIN_11 -to red_led[0]
+set_location_assignment PIN_120 -to col[3]
+set_location_assignment PIN_119 -to col[2]
+set_location_assignment PIN_118 -to col[1]
+set_location_assignment PIN_117 -to col[0]
+set_location_assignment PIN_113 -to row_in[2]
+set_location_assignment PIN_111 -to row_in[0]
+set_location_assignment PIN_112 -to row_in[1]
+set_location_assignment PIN_114 -to row_in[3]
+set_global_assignment -name VERILOG_FILE components/water_detection.v
+set_global_assignment -name VERILOG_FILE components/select_disp.v
+set_global_assignment -name VERILOG_FILE components/segment7.v
+set_global_assignment -name VERILOG_FILE components/led_matrix.v
+set_global_assignment -name VERILOG_FILE components/led_disp.v
+set_global_assignment -name VERILOG_FILE components/kv_map.v
+set_global_assignment -name VERILOG_FILE components/key_input.v
+set_global_assignment -name VERILOG_FILE components/div_clk.v
+set_global_assignment -name VERILOG_FILE components/digi_screen.v
+set_global_assignment -name VERILOG_FILE components/debounce.v
+set_global_assignment -name VERILOG_FILE components/controller.v
+set_global_assignment -name VERILOG_FILE components/beep.v
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "NO HEAT SINK WITH STILL AIR"
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH led_matrix_tb -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_NAME led_matrix_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME led_matrix_test -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/beep.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/controller.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/controller.v.bak -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/debounce.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/digi_screen.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/div_clk.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/key_input.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/key_input.v.bak -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/kv_map.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/led_disp.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/led_disp.v.bak -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/led_matrix.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/segment7.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/select_disp.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/select_disp.v.bak -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/water_detection.v -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE components/water_detection.v.bak -section_id led_matrix_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE tests/tb_led_matrix.v -section_id led_matrix_tb

@@ -1,0 +1,8 @@
+# Quartus Ignore Files
+*.bak
+output_files
+simulation
+*.bak
+*.rpt
+*.qws
+.qsys_edit
