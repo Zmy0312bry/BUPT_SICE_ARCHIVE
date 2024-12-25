@@ -13,7 +13,7 @@ always@(posedge clk or negedge rst)begin  //实现时序逻辑
 	end
 	else begin
 		case(cnt)
-        24'd0: begin
+         24'd0: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
@@ -21,31 +21,15 @@ always@(posedge clk or negedge rst)begin  //实现时序逻辑
             cnt <= cnt+1;  
             note <= 16'd758;  
         end
-        24'd104886: begin
+        24'd209772: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
-        24'd107189: begin
+        24'd214378: begin
             cnt <= cnt+1;  
             note <= 16'd758;  
         end
-        24'd212075: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd321567: begin
-            cnt <= cnt+1;  
-            note <= 16'd758;  
-        end
-        24'd426453: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd535945: begin
-            cnt <= cnt+1;  
-            note <= 16'd955;  
-        end
-        24'd640831: begin
+        24'd424150: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
@@ -53,175 +37,39 @@ always@(posedge clk or negedge rst)begin  //实现时序逻辑
             cnt <= cnt+1;  
             note <= 16'd758;  
         end
-        24'd821712: begin
+        24'd852906: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
-        24'd857512: begin
+        24'd1071890: begin
             cnt <= cnt+1;  
-            note <= 16'd637;  
+            note <= 16'd955;  
         end
-        24'd1036090: begin
+        24'd1281662: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
         24'd1286268: begin
             cnt <= cnt+1;  
-            note <= 16'd1275;  
-        end
-        24'd1464846: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd1200516: begin
-            cnt <= cnt+1;  
-            note <= 16'd1275;  
-        end
-        24'd1273936: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd1275548: begin
-            cnt <= cnt+1;  
-            note <= 16'd851;  
-        end
-        24'd0: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd0: begin
-            cnt <= cnt+1;  
             note <= 16'd758;  
         end
-        24'd104886: begin
+        24'd1643425: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
-        24'd107189: begin
-            cnt <= cnt+1;  
-            note <= 16'd758;  
-        end
-        24'd212075: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd321567: begin
-            cnt <= cnt+1;  
-            note <= 16'd758;  
-        end
-        24'd426453: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd535945: begin
-            cnt <= cnt+1;  
-            note <= 16'd955;  
-        end
-        24'd640831: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd643134: begin
-            cnt <= cnt+1;  
-            note <= 16'd758;  
-        end
-        24'd821712: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd857512: begin
+        24'd1715024: begin
             cnt <= cnt+1;  
             note <= 16'd637;  
         end
-        24'd1036090: begin
+        24'd2072181: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
-        24'd1286268: begin
+        24'd2572536: begin
             cnt <= cnt+1;  
             note <= 16'd1275;  
         end
-        24'd1464846: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd1200516: begin
-            cnt <= cnt+1;  
-            note <= 16'd1275;  
-        end
-        24'd1273936: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd1275548: begin
-            cnt <= cnt+1;  
-            note <= 16'd851;  
-        end
-        24'd1348968: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd1350580: begin
-            cnt <= cnt+1;  
-            note <= 16'd851;  
-        end
-        24'd1424000: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd1425612: begin
-            cnt <= cnt+1;  
-            note <= 16'd1136;  
-        end
-        24'd1499032: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd1575677: begin
-            cnt <= cnt+1;  
-            note <= 16'd851;  
-        end
-        24'd1649097: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd1650709: begin
-            cnt <= cnt+1;  
-            note <= 16'd1012;  
-        end
-        24'd1925778: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd2025870: begin
-            cnt <= cnt+1;  
-            note <= 16'd851;  
-        end
-        24'd2099290: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd2100903: begin
-            cnt <= cnt+1;  
-            note <= 16'd1012;  
-        end
-        24'd2174323: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd2175935: begin
-            cnt <= cnt+1;  
-            note <= 16'd955;  
-        end
-        24'd2249355: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd2250967: begin
-            cnt <= cnt+1;  
-            note <= 16'd851;  
-        end
-        24'd2375972: begin
+        24'd2929693: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
@@ -229,15 +77,7 @@ always@(posedge clk or negedge rst)begin  //实现时序逻辑
             cnt <= cnt+1;  
             note <= 16'd1275;  
         end
-        24'd2474452: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd2476064: begin
-            cnt <= cnt+1;  
-            note <= 16'd851;  
-        end
-        24'd2549484: begin
+        24'd2547872: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
@@ -245,97 +85,181 @@ always@(posedge clk or negedge rst)begin  //实现时序逻辑
             cnt <= cnt+1;  
             note <= 16'd851;  
         end
-        24'd2624516: begin
+        24'd0: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
-        24'd2626128: begin
+        24'd0: begin
             cnt <= cnt+1;  
-            note <= 16'd1136;  
+            note <= 16'd758;  
         end
-        24'd2699548: begin
+        24'd209772: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
-        24'd2776193: begin
+        24'd214378: begin
+            cnt <= cnt+1;  
+            note <= 16'd758;  
+        end
+        24'd424150: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd643134: begin
+            cnt <= cnt+1;  
+            note <= 16'd758;  
+        end
+        24'd852906: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd1071890: begin
+            cnt <= cnt+1;  
+            note <= 16'd955;  
+        end
+        24'd1281662: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd1286268: begin
+            cnt <= cnt+1;  
+            note <= 16'd758;  
+        end
+        24'd1643425: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd1715024: begin
+            cnt <= cnt+1;  
+            note <= 16'd637;  
+        end
+        24'd2072181: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd2572536: begin
+            cnt <= cnt+1;  
+            note <= 16'd1275;  
+        end
+        24'd2929693: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd2401032: begin
+            cnt <= cnt+1;  
+            note <= 16'd1275;  
+        end
+        24'd2547872: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd2551096: begin
             cnt <= cnt+1;  
             note <= 16'd851;  
         end
-        24'd2849613: begin
+        24'd2697936: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd2701161: begin
+            cnt <= cnt+1;  
+            note <= 16'd851;  
+        end
+        24'd2848001: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
         24'd2851225: begin
             cnt <= cnt+1;  
-            note <= 16'd1012;  
-        end
-        24'd3126294: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd3601548: begin
-            cnt <= cnt+1;  
-            note <= 16'd1275;  
-        end
-        24'd3674968: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd3676580: begin
-            cnt <= cnt+1;  
-            note <= 16'd851;  
-        end
-        24'd3750000: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd3751612: begin
-            cnt <= cnt+1;  
-            note <= 16'd851;  
-        end
-        24'd3825032: begin
-            cnt <= cnt+1;  
-            note <= 16'd0;  
-        end
-        24'd3826644: begin
-            cnt <= cnt+1;  
             note <= 16'd1136;  
         end
-        24'd3900064: begin
+        24'd2998065: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
-        24'd3976709: begin
+        24'd3151354: begin
             cnt <= cnt+1;  
             note <= 16'd851;  
         end
-        24'd4050129: begin
+        24'd3298194: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd3301419: begin
+            cnt <= cnt+1;  
+            note <= 16'd1012;  
+        end
+        24'd3851557: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
         24'd4051741: begin
             cnt <= cnt+1;  
-            note <= 16'd1012;  
+            note <= 16'd851;  
         end
-        24'd4326810: begin
+        24'd4198581: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
-        24'd4426902: begin
+        24'd4201806: begin
             cnt <= cnt+1;  
-            note <= 16'd851;  
+            note <= 16'd1012;  
         end
-        24'd4500322: begin
+        24'd4348646: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd4351870: begin
+            cnt <= cnt+1;  
+            note <= 16'd955;  
+        end
+        24'd4498710: begin
             cnt <= cnt+1;  
             note <= 16'd0;  
         end
         24'd4501935: begin
             cnt <= cnt+1;  
-            note <= 16'd1012;
-		end		
-			default: begin
-            cnt <= cnt+1;
+            note <= 16'd851;  
         end
+        24'd4751944: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd4802064: begin
+            cnt <= cnt+1;  
+            note <= 16'd1275;  
+        end
+        24'd4948904: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd4952128: begin
+            cnt <= cnt+1;  
+            note <= 16'd851;  
+        end
+        24'd5098968: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd5102193: begin
+            cnt <= cnt+1;  
+            note <= 16'd851;  
+        end
+        24'd5249033: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        24'd5252257: begin
+            cnt <= cnt+1;  
+            note <= 16'd1136;  
+        end
+        24'd5399097: begin
+            cnt <= cnt+1;  
+            note <= 16'd0;  
+        end
+        default: begin
+            cnt <= cnt+1;
+        end		
 		endcase
 		
 	end

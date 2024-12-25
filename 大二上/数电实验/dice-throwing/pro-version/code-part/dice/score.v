@@ -105,14 +105,15 @@ end
                 times <= 0;
 					 finish<=0;
 					 switch <= 0;
+					 is_final <=0;
 					 
-				end
-				else if(cnt>=28'd3000000)begin
-					switch<=1;
-					cnt<=cnt+1;
 				end
 				else if(cnt >= 28'd4999900)begin
 					finish<=1;
+					cnt<=cnt+1;
+				end
+				else if(cnt>=28'd3000000)begin
+					switch<=1;
 					cnt<=cnt+1;
 				end
             else begin
@@ -169,12 +170,8 @@ end
 				state2<=state2_tmp;
 			end
 			else if(switch)begin
-				if (dice1 < dice2)begin
-					state1<=state1+1;
-				end
-				else begin
-					state2<=state2+1;
-				end
+				state1<=state1_tmp;
+				state2<=state2_tmp;
 			end
 		end
 	 end

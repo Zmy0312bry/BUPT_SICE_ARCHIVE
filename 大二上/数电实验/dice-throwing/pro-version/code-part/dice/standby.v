@@ -29,7 +29,7 @@ module standby(clk, times, is_final, rst, score1, score2, rgb_led,is_finish);
         if (!rst) begin
             cnt <= 20'd0;
 				end else if (!is_final && times) begin  //不是最后一把并且times为高电平
-            if (cnt >= 20'd100001) begin
+            if (cnt >= 20'd100001) begin   //cnt >= 20'd100001
                 cnt <= 20'd0;
             end else begin
                 cnt <= cnt + 1;
@@ -46,7 +46,7 @@ module standby(clk, times, is_final, rst, score1, score2, rgb_led,is_finish);
             if (times) begin
                 if (rgb_led == 16'd0) begin
                     rgb_led <= 16'b0000_0000_0000_0001;
-                end else if (cnt >= 20'd100000) begin
+                end else if (cnt >= 20'd100000) begin   //cnt >= 20'd100000
                     rgb_led <= {rgb_led[0],rgb_led[15:1]};
                 end
 					 end

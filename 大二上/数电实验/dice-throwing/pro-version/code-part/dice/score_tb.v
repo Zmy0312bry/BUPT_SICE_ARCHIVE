@@ -31,15 +31,11 @@ module score_tb;
     // 信号绑定到内部变量 (从DUT中获取内部信号)
     assign cnt = uut.cnt;
     assign difference = uut.difference;
-    assign start1_sync = uut.start1_sync;
-    assign start2_sync = uut.start2_sync;
-    assign start1_before = uut.start1_before;
-    assign start2_before = uut.start2_before;
-    assign flag1 = uut.flag1;
-    assign flag2 = uut.flag2;
     assign sign = uut.sign;
 	 assign s_tmp1 = uut.state1_tmp;
 	 assign s_tmp2 = uut.state2_tmp;
+	 assign state1 = uut.state1;
+	 assign state2 = uut.state2;
 
     // 时钟生成
     initial begin
@@ -80,18 +76,18 @@ module score_tb;
 		          // 测试平局
         #10 start1 = 1; #10 start1 = 0;
         #10 start2 = 1; #10 start2 = 0;
-        #10 dice1 = 4'd2; dice2 = 4'd6; // 投骰子，平局
+        #10 dice1 = 4'd2; dice2 = 4'd6; // 投骰子
         #10000;
 		  
         // 测试平局
         #10 start1 = 1; #10 start1 = 0;
         #10 start2 = 1; #10 start2 = 0;
-        #10 dice1 = 4'd2; dice2 = 4'd6; // 投骰子，平局
+        #10 dice1 = 4'd2; dice2 = 4'd6; // 投骰子
         #10000;
         // 测试平局
         #10 start1 = 1; #10 start1 = 0;
         #10 start2 = 1; #10 start2 = 0;
-        #10 dice1 = 4'd2; dice2 = 4'd6; // 投骰子，平局
+        #10 dice1 = 4'd2; dice2 = 4'd6; // 投骰
         #10000;
         // 结束仿真
         #100 $stop;

@@ -57,7 +57,7 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "NO HEAT SINK WITH STILL AIR"
 set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
-set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH tb_is_roll -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH tb_standby -section_id eda_simulation
 set_global_assignment -name EDA_TEST_BENCH_NAME tb_dice -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_dice
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_dice -section_id tb_dice
@@ -125,13 +125,9 @@ set_global_assignment -name EDA_TEST_BENCH_NAME score_tb -section_id eda_simulat
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id score_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME score_tb -section_id score_tb
 set_location_assignment PIN_60 -to beep
-set_global_assignment -name EDA_TEST_BENCH_FILE tb_dice.v -section_id tb_dice
-set_global_assignment -name EDA_TEST_BENCH_FILE score_tb.v -section_id score_tb
 set_global_assignment -name EDA_TEST_BENCH_NAME tb_is_roll -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_is_roll
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_is_roll -section_id tb_is_roll
-set_global_assignment -name EDA_TEST_BENCH_FILE tb_is_roll.v -section_id tb_is_roll
-set_global_assignment -name VERILOG_FILE buzzer_music.v
 set_global_assignment -name VERILOG_FILE dice.v
 set_global_assignment -name VERILOG_FILE random.v
 set_global_assignment -name VERILOG_FILE dot_matrix.v
@@ -141,6 +137,19 @@ set_global_assignment -name VERILOG_FILE segment.v
 set_global_assignment -name VERILOG_FILE prescaler.v
 set_global_assignment -name VERILOG_FILE score.v
 set_global_assignment -name VERILOG_FILE standby.v
-set_global_assignment -name VERILOG_FILE score_tb.v
-set_global_assignment -name VERILOG_FILE tb_is_roll.v
 set_global_assignment -name VERILOG_FILE music.v
+set_global_assignment -name EDA_TEST_BENCH_NAME tb_debounce_double -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_debounce_double
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_debounce_double -section_id tb_debounce_double
+set_global_assignment -name EDA_TEST_BENCH_NAME tb_dot_matrix -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_dot_matrix
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_dot_matrix -section_id tb_dot_matrix
+set_global_assignment -name EDA_TEST_BENCH_FILE tb_dice.v -section_id tb_dice
+set_global_assignment -name EDA_TEST_BENCH_FILE score_tb.v -section_id score_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE tb_is_roll.v -section_id tb_is_roll
+set_global_assignment -name EDA_TEST_BENCH_FILE tb_debounce.v -section_id tb_debounce_double
+set_global_assignment -name EDA_TEST_BENCH_FILE tb_dot_matrix.v -section_id tb_dot_matrix
+set_global_assignment -name EDA_TEST_BENCH_NAME tb_standby -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_standby
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_standby -section_id tb_standby
+set_global_assignment -name EDA_TEST_BENCH_FILE tb_standby.v -section_id tb_standby
