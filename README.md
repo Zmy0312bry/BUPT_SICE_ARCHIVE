@@ -6,8 +6,8 @@
 大一上：
 - [大一上导论](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%80%E4%B8%8A/%E5%AF%BC%E8%AE%BA)
 - [改革开放史](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%80%E4%B8%8A/%E6%94%B9%E9%9D%A9%E5%BC%80%E6%94%BE%E5%8F%B2)
-- [军事理论论文.docx[点击下载]](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/raw/refs/heads/main/%E5%A4%A7%E4%B8%80%E4%B8%8A/%E5%86%9B%E4%BA%8B%E7%90%86%E8%AE%BA%E8%AE%BA%E6%96%87.docx)
-- [C++作业(Maybe more?)](https://www.zhaocloud.work/tags/c++/)
+- [军事理论论文.docx(点击下载)](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/raw/refs/heads/main/%E5%A4%A7%E4%B8%80%E4%B8%8A/%E5%86%9B%E4%BA%8B%E7%90%86%E8%AE%BA%E8%AE%BA%E6%96%87.docx)
+- [C++作业(Maybe more?)](https://www.zhaocloud.work/tags/cpp/)
 
 大一下：
 - [数学实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%80%E4%B8%8B/%E6%95%B0%E5%AD%A6%E5%AE%9E%E9%AA%8C)
