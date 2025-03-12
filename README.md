@@ -12,8 +12,14 @@
 大一下：
 - [数学实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%80%E4%B8%8B/%E6%95%B0%E5%AD%A6%E5%AE%9E%E9%AA%8C)
 - [数据结构实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%80%E4%B8%8B/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A)
-- [模电实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%80%E4%B8%8B/%E6%A8%A1%E7%94%B5%E5%AE%9E%E9%AA%8C)
+- [模电实验-上](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%80%E4%B8%8B/%E6%A8%A1%E7%94%B5%E5%AE%9E%E9%AA%8C)
 - [工程计算(Maybe more?)](https://www.zhaocloud.work/tags/matlab/)
+
+大二上：
+- [创新思维](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%BA%8C%E4%B8%8A/%E5%88%9B%E6%96%B0%E6%80%9D%E7%BB%B4)
+- [大学物理实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%BA%8C%E4%B8%8A/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86%E5%AE%9E%E9%AA%8C)
+- [数电实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%BA%8C%E4%B8%8A/%E6%95%B0%E7%94%B5%E5%AE%9E%E9%AA%8C)
+- [模电实验-下](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%BA%8C%E4%B8%8A/%E6%A8%A1%E7%94%B5%E5%AE%9E%E9%AA%8C-%E4%B8%8B)
 
 ## 关于我们 📝✨
 
