@@ -8,6 +8,7 @@
 - [改革开放史](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%80%E4%B8%8A/%E6%94%B9%E9%9D%A9%E5%BC%80%E6%94%BE%E5%8F%B2)
 - [军事理论论文.docx(点击下载)](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/raw/refs/heads/main/%E5%A4%A7%E4%B8%80%E4%B8%8A/%E5%86%9B%E4%BA%8B%E7%90%86%E8%AE%BA%E8%AE%BA%E6%96%87.docx)
 - [C++作业(Maybe more?)](https://www.zhaocloud.work/tags/cpp/)
+- [显示技术与游戏应用](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/refs/heads/main/%E5%A4%A7%E4%B8%80%E4%B8%8A/%E6%98%BE%E7%A4%BA%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%B8%B8%E6%88%8F%E5%BA%94%E7%94%A8-%E5%8F%8C%E5%88%9B%E8%AF%BE%E6%9C%9F%E6%9C%AB%E4%BD%9C%E4%B8%9A.docx)
 
 大一下：
 - [数学实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%80%E4%B8%8B/%E6%95%B0%E5%AD%A6%E5%AE%9E%E9%AA%8C)
@@ -19,7 +20,16 @@
 - [创新思维](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%BA%8C%E4%B8%8A/%E5%88%9B%E6%96%B0%E6%80%9D%E7%BB%B4)
 - [大学物理实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%BA%8C%E4%B8%8A/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86%E5%AE%9E%E9%AA%8C)
 - [数电实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%BA%8C%E4%B8%8A/%E6%95%B0%E7%94%B5%E5%AE%9E%E9%AA%8C)
+- [数电课程实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%BA%8C%E4%B8%8A/%E6%95%B0%E7%94%B5%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C)
 - [模电实验-下](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%BA%8C%E4%B8%8A/%E6%A8%A1%E7%94%B5%E5%AE%9E%E9%AA%8C-%E4%B8%8B)
+
+大二下：
+- [DSP实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/大二下/DSP实验)
+- [思政相关](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/大二下/思政相关)
+- [概率论](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/大二下/概率论)
+- [程序设计](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/大二下/程序设计)
+- [通信前沿](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/大二下/通信前沿)
+- [项目管理](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/大二下/项目管理)
 
 ## 关于我们 📝✨
 
@@ -35,7 +45,7 @@
 
 **Always remember~  Do homework yourself~!**
 
-我们鼓励自主学习和独立思考，切勿直接复制他人作业！~~(也许水课可以？)~~
+我们鼓励自主学习和独立思考，所以我们尽可能提供了`PDF`而不是`docx`，切勿直接复制他人作业！~~(也许水课可以？)~~
 
 ## Join Us 🤝
 
