@@ -1,0 +1,8 @@
+poina = 640008
+
+[ssh]
+host = "XX.XXX.XXX.XXX"
+user = "class"
+port = 22
+# password = "your_password"
+ssh_key = "~/.ssh/id_ed25519"

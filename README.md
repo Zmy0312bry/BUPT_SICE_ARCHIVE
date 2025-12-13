@@ -31,6 +31,9 @@
 - [通信前沿](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/大二下/通信前沿)
 - [项目管理](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/大二下/项目管理)
 
+大三上：
+- [电磁场实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/大三上/电磁场实验)
+
 ## 关于我们 📝✨
 
 我们是BUPT信通院的两个菜鸡 🐣，创建这个仓库的目的有两个：
