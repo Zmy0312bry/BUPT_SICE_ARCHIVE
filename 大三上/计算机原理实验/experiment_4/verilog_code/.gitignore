@@ -1,0 +1,5 @@
+db/
+incremental_db/
+simulation/
+!*.qws
+*.bak
