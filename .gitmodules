@@ -2,3 +2,6 @@
 	path = 大二上/数电实验/air_conditioner
 	url = https://github.com/YoungerBUPT2023/2024BUPT-Conditioner.git
 
+[submodule "大三上/计算机原理实验/experiment_4/verilog_mnist"]
+	path = 大三上/计算机原理实验/experiment_4/verilog_mnist
+	url = https://github.com/zhao-leo/verilog_mnist
