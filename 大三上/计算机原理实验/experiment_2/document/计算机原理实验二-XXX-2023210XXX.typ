@@ -34,16 +34,16 @@
 == 实验原理
 双端口存储器简介
 
-双端口存储器是指同一个存储器具有两组相互独立的读写控制线路,进行并行的独立操作，是一种高速工作的存储器。 
+双端口存储器是指同一个存储器具有两组相互独立的读写控制线路,进行并行的独立操作，是一种高速工作的存储器。
 #figure(
   image("assets/image.png",width:90%),
   caption: [双端口存储器结构图]
 )
 - clock:系统时钟50Mhz，用于提供RAM读写数据；
 - wraddress:写数据地址，将数据写入该地址的RAM存储区内；
-- data:写入的数据0~7； 
+- data:写入的数据0~7；
 - wren:写使能高电平有效；
-- rdadress:读数据地址，将内存中的数据从RAM存储区读出； 
+- rdadress:读数据地址，将内存中的数据从RAM存储区读出；
 #figure(
   image("assets/image-1.png"),
   caption: [双端口存储器时序图-1]
@@ -54,12 +54,18 @@
 )
 #pagebreak()
 == 实验步骤
+=== 实验连线
+先按照电路原理图进行连线，如 @figure-1-10 所示。
+#figure(
+  image("assets/接线图.png"),
+  caption: "实验连线图",
+) <figure-1-10>
 === 程序流程图
-系统启动后首先进行一系列初始化工作，包括HAL库初始化、系统时钟配置到82MHz工作频率、GPIO端口的配置以及定时器TIM4的初始化。定时器被设置为1ms的中断周期，用于实现数码管的动态扫描显示。随后对双RAM模块进行初始化，将所有控制信号设置为初始状态，并启动定时器中断。在进入主循环之前，系统会预先从两个RAM中读取一次数据，确保显示内容的正确性。
+系统启动后首先进行一系列初始化工作，包括HAL库、系统时钟、GPIO以及定时器的初始化。随后对双RAM模块进行初始化，将所有控制信号设置为初始状态，并启动定时器中断。在进入主循环之前，系统会预先从两个RAM中读取一次数据，确保显示内容的正确性。
 
 进入主循环后，系统持续执行一个固定的任务序列。首先读取8位拨码开关的状态，从中解析出各种控制参数：SW0控制读写模式、SW1选择操作的RAM、SW2和SW3组成2位待写入数据、SW4和SW5组成2位地址信息。然后根据这些状态更新8个LED指示灯的显示，让用户直观了解当前系统配置。接着从两个RAM中分别读取当前地址的数据，更新数码管显示缓冲区的内容。每次循环结束后延时50ms，既保证了系统响应的及时性，又避免了过度占用CPU资源。
 
-与主循环并行工作的是两个中断服务程序。定时器中断每1ms触发一次，负责数码管的动态扫描显示，通过74HC595移位寄存器发送段选数据，通过74HC138译码器选择当前点亮的数码管位，实现8位数码管的流畅显示。按钮中断响应用户的操作请求，按钮0在写入模式下将拨码开关设定的数据写入选定的RAM，按钮1则执行更复杂的异或运算，它会读取两个RAM相同地址的数据，进行按位异或后将结果写回到用户选定的RAM中。所有中断处理完成后都会添加20ms的消抖延时，确保操作的可靠性。
+与主循环并行工作的是两个中断服务程序。定时器中断每1ms触发一次，负责数码管的动态扫描显示，通过74HC595移位寄存器发送段选数据，通过74HC138译码器选择当前点亮的数码管位，实现8位数码管的流畅显示。按钮中断响应用户的操作请求，按钮0在写入模式下将拨码开关设定的数据写入选定的RAM，按钮1则执行更复杂的异或运算，它会读取两个RAM相同地址的数据，进行按位异或后将结果写回到用户选定的RAM中。
 
 具体流程图如 @figure-3-4 所示。
 #figure(
@@ -138,23 +144,23 @@ graph TD
     void HC595_SendByte(uint8_t data) {
         /* 锁存信号拉低，准备接收数据 */
         HAL_GPIO_WritePin(HC595_RCK_PORT, HC595_RCK_PIN, GPIO_PIN_RESET);
-        
+
         /* 从高位到低位依次发送8位数据 */
         for (int i = 7; i >= 0; i--) {
             /* 时钟信号拉低 */
             HAL_GPIO_WritePin(HC595_SCK_PORT, HC595_SCK_PIN, GPIO_PIN_RESET);
-            
+
             /* 设置数据线电平 */
             if (data & (1 << i)) {
                 HAL_GPIO_WritePin(HC595_SI_PORT, HC595_SI_PIN, GPIO_PIN_SET);
             } else {
                 HAL_GPIO_WritePin(HC595_SI_PORT, HC595_SI_PIN, GPIO_PIN_RESET);
             }
-            
+
             /* 时钟上升沿，数据被移入寄存器 */
             HAL_GPIO_WritePin(HC595_SCK_PORT, HC595_SCK_PIN, GPIO_PIN_SET);
         }
-        
+
         /* 锁存信号拉高，数据输出到Q0-Q7引脚 */
         HAL_GPIO_WritePin(HC595_RCK_PORT, HC595_RCK_PIN, GPIO_PIN_SET);
     }
@@ -179,10 +185,10 @@ graph TD
     void Update_Display(void) {
         /* 先关闭当前显示，避免重影 */
         HC595_SendByte(0x00);
-        
+
         /* 切换到下一位数码管(循环0-7) */
         current_digit = (current_digit + 1) % 8;
-        
+
         /* 选择对应的位并发送段码数据 */
         HC138_Select(current_digit);
         HC595_SendByte(display_buffer[current_digit]);
@@ -196,7 +202,7 @@ graph TD
     void Read_Switches(void) {
         /* 直接读取GPIOC的输入数据寄存器低8位 */
         uint8_t sw_value = (GPIOC->IDR & 0xFF);
-        
+
         /* 解析各个控制位 */
         sys_state.write_mode = (sw_value & 0x01) ? 1 : 0;        // SW0: 读写模式
         sys_state.ram_select = (sw_value & 0x02) ? 1 : 0;        // SW1: RAM选择
@@ -211,14 +217,14 @@ graph TD
     /* 根据系统状态更新LED显示 */
     void Update_LEDs(void) {
         uint8_t led_state = 0;
-        
+
         led_state |= 0x01;                          // LED0: 系统运行指示
         if (sys_state.write_mode) led_state |= 0x02;    // LED1: 写入模式
         if (!sys_state.ram_select) led_state |= 0x04;   // LED2: RAM0选中
         if (sys_state.ram_select) led_state |= 0x08;    // LED3: RAM1选中
         if (sys_state.addr & 0x01) led_state |= 0x10;   // LED4: 地址位0
         if (sys_state.addr & 0x02) led_state |= 0x20;   // LED5: 地址位1
-        
+
         /* 更新GPIOB的低8位输出 */
         GPIOB->ODR = (GPIOB->ODR & 0xFF00) | led_state;
     }
@@ -249,18 +255,18 @@ graph TD
             HAL_GPIO_WritePin(RAM_ADDRA_PORT, RAM_ADDRA_PIN, (addr & 0x01) ? GPIO_PIN_SET : GPIO_PIN_RESET);
             HAL_GPIO_WritePin(RAM_DIA0_PORT, RAM_DIA0_PIN, (data & 0x01) ? GPIO_PIN_SET : GPIO_PIN_RESET);
             HAL_GPIO_WritePin(RAM_DIA1_PORT, RAM_DIA1_PIN, (data & 0x02) ? GPIO_PIN_SET : GPIO_PIN_RESET);
-            
+
             /* 使能写入模式 */
             HAL_GPIO_WritePin(RAM_WEA_PORT, RAM_WEA_PIN, GPIO_PIN_SET);
             HAL_GPIO_WritePin(RAM_ENA_PORT, RAM_ENA_PIN, GPIO_PIN_SET);
-            
+
             /* 产生时钟上升沿，数据被写入 */
             HAL_GPIO_WritePin(RAM_CLKA_PORT, RAM_CLKA_PIN, GPIO_PIN_RESET);
             HAL_Delay(1);
             HAL_GPIO_WritePin(RAM_CLKA_PORT, RAM_CLKA_PIN, GPIO_PIN_SET);
             HAL_Delay(1);
             HAL_GPIO_WritePin(RAM_CLKA_PORT, RAM_CLKA_PIN, GPIO_PIN_RESET);
-            
+
             /* 关闭使能信号 */
             HAL_GPIO_WritePin(RAM_ENA_PORT, RAM_ENA_PIN, GPIO_PIN_RESET);
             HAL_GPIO_WritePin(RAM_WEA_PORT, RAM_WEA_PIN, GPIO_PIN_RESET);
@@ -269,16 +275,16 @@ graph TD
             HAL_GPIO_WritePin(RAM_ADDRB_PORT, RAM_ADDRB_PIN, (addr & 0x01) ? GPIO_PIN_SET : GPIO_PIN_RESET);
             HAL_GPIO_WritePin(RAM_DIB0_PORT, RAM_DIB0_PIN, (data & 0x01) ? GPIO_PIN_SET : GPIO_PIN_RESET);
             HAL_GPIO_WritePin(RAM_DIB1_PORT, RAM_DIB1_PIN, (data & 0x02) ? GPIO_PIN_SET : GPIO_PIN_RESET);
-            
+
             HAL_GPIO_WritePin(RAM_WEB_PORT, RAM_WEB_PIN, GPIO_PIN_SET);
             HAL_GPIO_WritePin(RAM_ENB_PORT, RAM_ENB_PIN, GPIO_PIN_SET);
-            
+
             HAL_GPIO_WritePin(RAM_CLKB_PORT, RAM_CLKB_PIN, GPIO_PIN_RESET);
             HAL_Delay(1);
             HAL_GPIO_WritePin(RAM_CLKB_PORT, RAM_CLKB_PIN, GPIO_PIN_SET);
             HAL_Delay(1);
             HAL_GPIO_WritePin(RAM_CLKB_PORT, RAM_CLKB_PIN, GPIO_PIN_RESET);
-            
+
             HAL_GPIO_WritePin(RAM_ENB_PORT, RAM_ENB_PIN, GPIO_PIN_RESET);
             HAL_GPIO_WritePin(RAM_WEB_PORT, RAM_WEB_PIN, GPIO_PIN_RESET);
         }
@@ -293,42 +299,42 @@ graph TD
         if (ram_sel == 0) {
             /* 读取RAM0 */
             HAL_GPIO_WritePin(RAM_ADDRA_PORT, RAM_ADDRA_PIN, (addr & 0x01) ? GPIO_PIN_SET : GPIO_PIN_RESET);
-            
+
             /* 关闭写使能，开启读模式 */
             HAL_GPIO_WritePin(RAM_WEA_PORT, RAM_WEA_PIN, GPIO_PIN_RESET);
             HAL_GPIO_WritePin(RAM_ENA_PORT, RAM_ENA_PIN, GPIO_PIN_SET);
-            
+
             /* 产生时钟上升沿 */
             HAL_GPIO_WritePin(RAM_CLKA_PORT, RAM_CLKA_PIN, GPIO_PIN_RESET);
             HAL_Delay(1);
             HAL_GPIO_WritePin(RAM_CLKA_PORT, RAM_CLKA_PIN, GPIO_PIN_SET);
             HAL_Delay(1);
-            
+
             /* 从输出端口读取数据 */
             uint8_t data = 0;
             if (HAL_GPIO_ReadPin(RAM_DOA0_PORT, RAM_DOA0_PIN)) data |= 0x01;
             if (HAL_GPIO_ReadPin(RAM_DOA1_PORT, RAM_DOA1_PIN)) data |= 0x02;
             sys_state.ram0_data = data;
-            
+
             HAL_GPIO_WritePin(RAM_CLKA_PORT, RAM_CLKA_PIN, GPIO_PIN_RESET);
             HAL_GPIO_WritePin(RAM_ENA_PORT, RAM_ENA_PIN, GPIO_PIN_RESET);
         } else {
             /* 读取RAM1，流程相同 */
             HAL_GPIO_WritePin(RAM_ADDRB_PORT, RAM_ADDRB_PIN, (addr & 0x01) ? GPIO_PIN_SET : GPIO_PIN_RESET);
-            
+
             HAL_GPIO_WritePin(RAM_WEB_PORT, RAM_WEB_PIN, GPIO_PIN_RESET);
             HAL_GPIO_WritePin(RAM_ENB_PORT, RAM_ENB_PIN, GPIO_PIN_SET);
-            
+
             HAL_GPIO_WritePin(RAM_CLKB_PORT, RAM_CLKB_PIN, GPIO_PIN_RESET);
             HAL_Delay(1);
             HAL_GPIO_WritePin(RAM_CLKB_PORT, RAM_CLKB_PIN, GPIO_PIN_SET);
             HAL_Delay(1);
-            
+
             uint8_t data = 0;
             if (HAL_GPIO_ReadPin(RAM_DOB0_PORT, RAM_DOB0_PIN)) data |= 0x01;
             if (HAL_GPIO_ReadPin(RAM_DOB1_PORT, RAM_DOB1_PIN)) data |= 0x02;
             sys_state.ram1_data = data;
-            
+
             HAL_GPIO_WritePin(RAM_CLKB_PORT, RAM_CLKB_PIN, GPIO_PIN_RESET);
             HAL_GPIO_WritePin(RAM_ENB_PORT, RAM_ENB_PIN, GPIO_PIN_RESET);
         }
@@ -342,21 +348,21 @@ graph TD
     void Update_Display_Buffer(void) {
         /* 位1: RAM1数据的第0位 */
         display_buffer[0] = (sys_state.ram1_data & 0x01) ? DigitCode[1] : DigitCode[0];
-        
+
         /* 位2: RAM1数据的第1位 */
         display_buffer[1] = (sys_state.ram1_data & 0x02) ? DigitCode[1] : DigitCode[0];
-        
+
         /* 位3: RAM0数据的第0位，带小数点 */
         display_buffer[2] = ((sys_state.ram0_data & 0x01) ? DigitCode[1] : DigitCode[0]) | 0x80;
-        
+
         /* 位4: RAM0数据的第1位 */
         display_buffer[3] = (sys_state.ram0_data & 0x02) ? DigitCode[1] : DigitCode[0];
-        
+
         /* 位5-7: 保留不显示 */
         display_buffer[4] = 0x00;
         display_buffer[5] = 0x00;
         display_buffer[6] = 0x00;
-        
+
         /* 位8: 显示待写入的数据值(0-3) */
         display_buffer[7] = DigitCode[sys_state.data_to_write];
     }
@@ -368,24 +374,24 @@ graph TD
     int main(void) {
         /* HAL库初始化 */
         HAL_Init();
-        
+
         /* 配置系统时钟到82MHz */
         SystemClock_Config();
-        
+
         /* 初始化GPIO和定时器 */
         MX_GPIO_Init();
         MX_TIM4_Init();
-        
+
         /* 初始化双RAM模块 */
         RAM_Init();
-        
+
         /* 启动定时器中断，开始数码管扫描 */
         HAL_TIM_Base_Start_IT(&htim4);
-        
+
         /* 预读取RAM数据 */
         RAM_Read(0, sys_state.addr);
         RAM_Read(1, sys_state.addr);
-        
+
         /* 主循环 */
         while (1) {
             Read_Switches();          // 读取拨码开关
@@ -409,7 +415,7 @@ graph TD
                 RAM_Write(sys_state.ram_select, sys_state.addr, sys_state.data_to_write);
             }
             HAL_Delay(20);  // 消抖
-        } 
+        }
         else if (GPIO_Pin == GPIO_PIN_12) {
             /* 按钮1：异或操作 */
             RAM_Read(0, sys_state.addr);
@@ -546,7 +552,14 @@ STM32作为主控制器，通过PF端口的16个GPIO引脚与FPGA建立通信接
 
 整个系统的工作流程是：主循环以50ms为周期持续监测拨码开关状态并读取RAM数据，定时器中断以1ms为周期刷新数码管显示，按钮中断异步响应用户的操作请求。这种多任务协作的架构保证了系统的实时性和流畅性，实现了一个功能完整、交互友好的双端口存储器实验平台。通过这种STM32+FPGA的混合架构，既利用了FPGA在并行逻辑处理和真正双端口实现上的优势，又发挥了STM32在控制逻辑、外设驱动和人机交互方面的灵活性。
 
+=== 实验现象
+#link("https://www.bilibili.com/video/BV1K2qrBXEnq/")[
+  #highlight[点击前往BiliBili观看实验视频]@bilibili
+]
+
 == 实验总结
 通过本次双端口存储器实验，我深刻体会到了嵌入式系统开发中硬件与软件协同设计的重要性。在实验过程中，我不仅学会了使用Verilog在FPGA中实现真正的双端口RAM结构，还掌握了STM32与FPGA之间的接口时序设计和通信协议。特别是在调试过程中遇到的时序不匹配问题，让我认识到在跨芯片通信中必须严格遵守建立时间和保持时间的要求，这需要对硬件时序有深入的理解。数码管动态扫描的实现也让我理解了分时复用技术的精髓，通过定时器中断实现高频刷新，既节省了IO资源又获得了良好的显示效果。
 
 整个实验最大的收获是培养了系统化思维能力。从顶层架构设计、模块功能划分、接口协议定义到最终的调试验证，每个环节都需要全面考虑。异或运算功能的实现让我体会到双端口RAM在数据处理中的优势，两个端口可以同时访问不同的存储单元，大大提高了数据吞吐效率。同时，通过LED指示、数码管显示和拨码开关输入的综合运用，我学会了如何设计直观友好的人机交互界面。这次实验不仅巩固了数字电路和嵌入式编程的理论知识，更重要的是锻炼了分析问题、解决问题的实践能力，为今后从事更复杂的嵌入式系统开发打下了坚实的基础。
+
+#bibliography("refs.bib",style:"gb-7714-2005-numeric")

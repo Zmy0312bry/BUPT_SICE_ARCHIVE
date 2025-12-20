@@ -125,10 +125,16 @@ STM32F4供IO口使用的中断线只有16个，但是STM32F4的IO口却远远不
 )<figure-3-3>
 #pagebreak()
 == 实验步骤
+=== 实验连线
+先按照电路原理图进行连线，如 @figure-1-10 所示。
+#figure(
+  image("assets/接线图.png"),
+  caption: "实验连线图",
+) <figure-1-10>
 === 程序流程图
 程序启动后首先进行系统初始化，包括HAL库初始化、系统时钟配置、GPIO外设初始化和TIM3定时器初始化。初始化完成后，程序进入主循环，执行三种不同优先级的任务。
 
-在正常状态下，程序通过74HC595移位寄存器和74HC138译码器控制数码管显示0-9的循环计数，每秒更新一次数字。当检测到PB12按键按下时，触发外部中断，主循环暂停数码管显示任务，转而执行交通灯闪烁任务。该任务控制两组交通灯（R1-Y1-G1和R2-Y2-G2）以250毫秒为间隔交替闪烁，持续3秒后自动结束并返回正常显示。
+在正常状态下，程序通过74HC595移位寄存器和74HC138译码器控制数码管显示0-9的循环计数，每秒更新一次数字。当检测到PB12按键按下时，触发外部中断，主循环暂停数码管显示任务，转而执行交通灯闪烁任务。该任务控制两组交通灯（R1-Y1-G1和R2-Y2-G2）交替闪烁，持续3秒后自动结束并返回正常显示。
 
 当PB9按键按下时，触发更高优先级的中断。此时无论系统处于何种状态，都会立即响应PB9中断。如果PB12的交通灯任务正在执行，系统会保存其当前状态和已经过的时间，然后暂停该任务。接着执行LED顺序点亮任务，8个LED（PF0-PF7）依次点亮，每个LED点亮间隔100毫秒，全部点亮后保持1秒。LED任务完成后，如果之前PB12任务被中断，系统会根据保存的状态信息恢复PB12任务，继续执行剩余时间的交通灯闪烁，实现了任务的抢占与恢复机制。
 
@@ -236,13 +242,13 @@ STM32F4供IO口使用的中断线只有16个，但是STM32F4的IO口却远远不
     htim3.Init.Period = 65535;                       // 自动重装载值
     htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
     htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-    
+
     /* 初始化定时器基础功能 */
     if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
     {
       Error_Handler();
     }
-    
+
     /* 配置时钟源 */
     sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
     if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
@@ -279,35 +285,35 @@ STM32F4供IO口使用的中断线只有16个，但是STM32F4的IO口却远远不
   /* 74HC595发送字节函数 */
   void HC595_SendByte(uint8_t data) {
       HAL_GPIO_WritePin(RCK_PORT, RCK_PIN, GPIO_PIN_RESET); // 拉低锁存时钟
-      
+
       for (int i = 7; i >= 0; i--) {                        // 发送8位数据，MSB优先
           HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
-          
+
           if (data & (1 << i)) {
               HAL_GPIO_WritePin(SI_PORT, SI_PIN, GPIO_PIN_SET);
           } else {
               HAL_GPIO_WritePin(SI_PORT, SI_PIN, GPIO_PIN_RESET);
           }
-          
+
           HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET); // 上升沿锁存数据
       }
-      
+
       HAL_GPIO_WritePin(RCK_PORT, RCK_PIN, GPIO_PIN_SET);   // 输出到并行口
   }
 
   /* 交通灯闪烁任务 */
   void Traffic_Light_Task(void) {
       uint32_t elapsed = HAL_GetTick() - interrupt_start_time;
-      
+
       if (elapsed >= 3000) {                                // 3秒后结束
-          HAL_GPIO_WritePin(TRAFFIC_PORT, R1_PIN | Y1_PIN | G1_PIN | 
+          HAL_GPIO_WritePin(TRAFFIC_PORT, R1_PIN | Y1_PIN | G1_PIN |
                           R2_PIN | Y2_PIN | G2_PIN, GPIO_PIN_RESET);
           pb12_interrupt_active = 0;
           return;
       }
-      
+
       uint32_t phase = (elapsed / 250) % 2;                 // 250ms周期交替
-      
+
       if (phase == 0) {
           HAL_GPIO_WritePin(TRAFFIC_PORT, R1_PIN | Y1_PIN | G1_PIN, GPIO_PIN_SET);
           HAL_GPIO_WritePin(TRAFFIC_PORT, R2_PIN | Y2_PIN | G2_PIN, GPIO_PIN_RESET);
@@ -320,11 +326,11 @@ STM32F4供IO口使用的中断线只有16个，但是STM32F4的IO口却远远不
   /* LED顺序点亮任务 */
   void LED_Sequential_Task(void) {
       uint32_t elapsed = HAL_GetTick() - interrupt_start_time;
-      
+
       if (elapsed >= 1800) {                                // 1.8秒后结束
           HAL_GPIO_WritePin(LED_PORT, 0xFF, GPIO_PIN_RESET);
           pb9_interrupt_active = 0;
-          
+
           if (pb12_was_preempted) {                         // 恢复被抢占的PB12任务
               pb12_interrupt_active = 1;
               pb12_was_preempted = 0;
@@ -332,19 +338,19 @@ STM32F4供IO口使用的中断线只有16个，但是STM32F4的IO口却远远不
           }
           return;
       }
-      
+
       uint8_t led_count = elapsed / 100;                    // 每100ms点亮一个LED
-      
+
       if (led_count >= 8) {                                 // 全部点亮后保持
           HAL_GPIO_WritePin(LED_PORT, 0xFF, GPIO_PIN_SET);
           return;
       }
-      
+
       uint16_t led_mask = 0;
       for (uint8_t i = 0; i <= led_count; i++) {
           led_mask |= (1 << i);
       }
-      
+
       HAL_GPIO_WritePin(LED_PORT, 0xFF, GPIO_PIN_RESET);
       HAL_GPIO_WritePin(LED_PORT, led_mask, GPIO_PIN_SET);
   }
@@ -356,7 +362,7 @@ STM32F4供IO口使用的中断线只有16个，但是STM32F4的IO口却远远不
     SystemClock_Config();          // 系统时钟配置
     MX_GPIO_Init();                // GPIO初始化
     MX_TIM3_Init();                // TIM3初始化
-    
+
     HAL_TIM_Base_Start(&htim3);    // 启动TIM3定时器
     last_update_time = HAL_GetTick();
 
@@ -367,13 +373,13 @@ STM32F4供IO口使用的中断线只有16个，但是STM32F4的IO口却远远不
           last_update_time = HAL_GetTick();
           continue;
       }
-      
+
       if (pb12_interrupt_active) {                    // PB12中断次优先级
           Traffic_Light_Task();
           last_update_time = HAL_GetTick();
           continue;
       }
-      
+
       /* 正常任务：数码管显示0-9循环 */
       uint32_t current_time = HAL_GetTick();
       if (current_time - last_update_time >= 1000) {  // 每秒更新
@@ -383,7 +389,7 @@ STM32F4供IO口使用的中断线只有16个，但是STM32F4的IO口却远远不
           }
           last_update_time = current_time;
       }
-      
+
       Display_Digit(current_digit);                   // 显示当前数字
     }
   }
@@ -398,15 +404,15 @@ STM32F4供IO口使用的中断线只有16个，但是STM32F4的IO口却远远不
           }
       } else if (GPIO_Pin == GPIO_PIN_9) {            // PB9按键中断
           pb9_interrupt_active = 1;
-          
+
           if (pb12_interrupt_active) {                // 抢占PB12任务
               pb12_was_preempted = 1;
               pb12_elapsed_before_preempt = HAL_GetTick() - interrupt_start_time;
               pb12_interrupt_active = 0;
           }
-          
+
           interrupt_start_time = HAL_GetTick();
-          HAL_GPIO_WritePin(TRAFFIC_PORT, R1_PIN | Y1_PIN | G1_PIN | 
+          HAL_GPIO_WritePin(TRAFFIC_PORT, R1_PIN | Y1_PIN | G1_PIN |
                           R2_PIN | Y2_PIN | G2_PIN, GPIO_PIN_RESET);
           HAL_GPIO_WritePin(LED_PORT, 0xFF, GPIO_PIN_RESET);
       }
@@ -422,7 +428,14 @@ STM32F4供IO口使用的中断线只有16个，但是STM32F4的IO口却远远不
 在回调函数中，程序通过判断GPIO_Pin参数来区分是哪个按键触发了中断，然后设置相应的任务标志位（`pb9_interrupt_active`或`pb12_interrupt_active`），记录中断触发时间戳，并进行必要的状态保存。主循环通过轮询这些标志位来执行相应的任务处理函数。
 
 本实验还实现了软件层面的任务抢占机制。当PB9中断发生时，如果PB12任务正在执行，程序会保存PB12的执行状态和已用时间，暂停其执行，优先处理PB9任务。PB9任务完成后，再根据保存的信息恢复PB12任务的执行，实现了中断嵌套和任务调度的功能。这种实现方式结合了硬件中断的快速响应和软件任务调度的灵活性，适合处理多优先级的实时任务。
+=== 实验现象
+#link("https://www.bilibili.com/video/BV1LTqkBuEX4/")[
+  #highlight[点击前往BiliBili观看实验视频]@bilibili
+]
+
 == 实验总结
 通过本次实验，我深入理解了STM32单片机的中断机制和多任务处理方法。在实际编程过程中，我体会到中断响应速度快、实时性强的特点，同时也认识到必须谨慎处理中断嵌套和任务切换时的状态保存问题。特别是在实现PB9抢占PB12任务时，需要精确记录时间戳和任务状态，确保任务恢复后能够继续正确执行。这让我明白了嵌入式系统开发中，时序控制和状态管理的重要性，也锻炼了我在复杂逻辑下的调试能力。
 
 此外，实验中使用74HC595和74HC138等外围芯片控制数码管和LED，加深了我对硬件接口和时序协议的理解。在调试过程中遇到的数码管显示闪烁、LED点亮不同步等问题，都通过分析时序图和逻辑分析得到了解决。这次实验不仅提升了我的硬件编程能力，也培养了系统性思考问题的习惯，为今后开发更复杂的嵌入式应用打下了坚实基础。
+
+#bibliography("refs.bib",style:"gb-7714-2005-numeric")
