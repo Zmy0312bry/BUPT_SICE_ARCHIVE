@@ -1,0 +1,45 @@
+name: 自动更新目录索引
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 需要写权限来提交更改
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: 生成索引
+        run: |
+          python scripts/generate_index.py
+
+      - name: 检查是否有变化
+        id: check_changes
+        run: |
+          git diff --exit-code README.md docs/index.json || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: 提交更改
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md docs/index.json
+          git commit -m "🤖 自动更新目录索引 [skip ci]"
+          git push

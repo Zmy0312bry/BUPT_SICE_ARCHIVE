@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>无限进步 | 北京邮电大学信通院本科资料</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+                    sans-serif;
+                background: #fff;
+                color: #202124;
+                line-height: 1.6;
+            }
+
+            .header {
+                text-align: center;
+                padding: 60px 20px 30px;
+            }
+
+            .logo {
+                font-size: 3em;
+                font-weight: 300;
+                color: #202124;
+                margin-bottom: 5px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+                color: #5f6368;
+                margin-bottom: 30px;
+            }
+
+            .search-container {
+                max-width: 584px;
+                margin: 0 auto 30px;
+                padding: 0 20px;
+            }
+
+            .search-box {
+                display: flex;
+                align-items: center;
+                border: 1px solid #dfe1e5;
+                border-radius: 24px;
+                padding: 10px 16px;
+                transition: box-shadow 0.2s;
+            }
+
+            .search-box:hover {
+                box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+                border-color: rgba(223, 225, 229, 0);
+            }
+
+            .search-box:focus-within {
+                box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+                border-color: rgba(223, 225, 229, 0);
+            }
+
+            .search-icon {
+                color: #9aa0a6;
+                margin-right: 10px;
+                font-size: 18px;
+            }
+
+            #search-input {
+                flex: 1;
+                border: none;
+                outline: none;
+                font-size: 16px;
+                color: #202124;
+                background: transparent;
+            }
+
+            .links {
+                text-align: center;
+                margin-bottom: 40px;
+            }
+
+            .links a {
+                color: #1a73e8;
+                text-decoration: none;
+                margin: 0 15px;
+                font-size: 14px;
+            }
+
+            .links a:hover {
+                text-decoration: underline;
+            }
+
+            .content {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 0 20px 60px;
+            }
+
+            .semester-section {
+                margin-bottom: 40px;
+            }
+
+            .semester-title {
+                font-size: 20px;
+                font-weight: 400;
+                color: #202124;
+                margin-bottom: 16px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #e8eaed;
+            }
+
+            .items-list {
+                list-style: none;
+            }
+
+            .item {
+                margin-bottom: 12px;
+            }
+
+            .item a {
+                display: flex;
+                align-items: center;
+                padding: 8px 12px;
+                border-radius: 8px;
+                text-decoration: none;
+                color: #1a73e8;
+                transition: background-color 0.15s;
+            }
+
+            .item a:hover {
+                background-color: #f1f3f4;
+            }
+
+            .item a:visited {
+                color: #681da8;
+            }
+
+            .item-icon {
+                margin-right: 12px;
+                font-size: 16px;
+                flex-shrink: 0;
+            }
+
+            .item-name {
+                flex: 1;
+                font-size: 14px;
+            }
+
+            .item-badge {
+                font-size: 11px;
+                color: #5f6368;
+                background: #f1f3f4;
+                padding: 2px 8px;
+                border-radius: 12px;
+                margin-left: 8px;
+            }
+
+            .loading {
+                text-align: center;
+                padding: 60px 20px;
+                color: #5f6368;
+                font-size: 14px;
+            }
+
+            .no-results {
+                text-align: center;
+                padding: 60px 20px;
+                color: #5f6368;
+                font-size: 14px;
+            }
+
+            .footer {
+                text-align: center;
+                padding: 20px;
+                color: #5f6368;
+                font-size: 13px;
+                border-top: 1px solid #e8eaed;
+                margin-top: 40px;
+            }
+
+            .footer a {
+                color: #1a73e8;
+                text-decoration: none;
+            }
+
+            .footer a:hover {
+                text-decoration: underline;
+            }
+
+            .stats {
+                text-align: center;
+                font-size: 13px;
+                color: #70757a;
+                margin-bottom: 20px;
+            }
+
+            .hidden {
+                display: none !important;
+            }
+
+            @media (max-width: 768px) {
+                .logo {
+                    font-size: 2em;
+                }
+
+                .links a {
+                    display: block;
+                    margin: 8px 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <div class="logo">📚 无限进步</div>
+            <div class="subtitle">北京邮电大学信通院本科资料</div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="搜索课程或资料..."
+                        autocomplete="off"
+                    />
+                </div>
+            </div>
+
+            <div class="stats">
+                <span id="stats-text">正在加载...</span>
+            </div>
+
+            <div class="links">
+                <a
+                    href="https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE"
+                    target="_blank"
+                    >GitHub 仓库</a
+                >
+                <a href="https://www.zhaocloud.work" target="_blank"
+                    >zhao-leo 的博客</a
+                >
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="loading" id="loading">正在加载资源...</div>
+            <div id="content" class="hidden"></div>
+            <div class="no-results hidden" id="no-results">
+                未找到匹配的资源
+            </div>
+        </div>
+
+        <div class="footer">
+            Made with ❤️ by
+            <a href="mailto:zhaomingyuan@bupt.edu.cn">M-Yuan</a> &
+            <a href="mailto:zhao@zhaocloud.work">zhao-leo</a>
+            <br />
+            <span style="margin-top: 8px; display: inline-block"
+                >Always remember~ Do homework yourself~!</span
+            >
+        </div>
+
+        <script>
+            let allData = null;
+
+            // 加载数据
+            async function loadData() {
+                try {
+                    const response = await fetch("index.json");
+                    allData = await response.json();
+                    renderContent(allData);
+                    updateStats(allData);
+                    document.getElementById("loading").classList.add("hidden");
+                    document
+                        .getElementById("content")
+                        .classList.remove("hidden");
+                } catch (error) {
+                    console.error("加载数据失败:", error);
+                    document.getElementById("loading").textContent =
+                        "加载失败，请刷新页面重试";
+                }
+            }
+
+            // 渲染内容
+            function renderContent(data) {
+                const contentDiv = document.getElementById("content");
+                contentDiv.innerHTML = "";
+
+                const semesterOrder = [
+                    "大一上",
+                    "大一下",
+                    "大二上",
+                    "大二下",
+                    "大三上",
+                    "大三下",
+                    "其他资源",
+                ];
+
+                semesterOrder.forEach((semester) => {
+                    if (!data[semester]) return;
+
+                    const section = document.createElement("div");
+                    section.className = "semester-section";
+
+                    const title = document.createElement("h2");
+                    title.className = "semester-title";
+                    title.textContent = semester;
+                    section.appendChild(title);
+
+                    const list = document.createElement("ul");
+                    list.className = "items-list";
+
+                    data[semester].items.forEach((item) => {
+                        const li = document.createElement("li");
+                        li.className = "item";
+
+                        const link = document.createElement("a");
+                        link.href = item.url;
+                        link.target = "_blank";
+
+                        const icon = document.createElement("span");
+                        icon.className = "item-icon";
+                        icon.textContent = item.type === "dir" ? "📁" : "📄";
+                        link.appendChild(icon);
+
+                        const name = document.createElement("span");
+                        name.className = "item-name";
+                        name.textContent = item.name;
+                        link.appendChild(name);
+
+                        if (
+                            item.type === "file" &&
+                            /\.(docx|pdf|zip|rar|7z|md|png)$/i.test(item.name)
+                        ) {
+                            const badge = document.createElement("span");
+                            badge.className = "item-badge";
+                            badge.textContent = "下载";
+                            link.appendChild(badge);
+                        }
+
+                        li.appendChild(link);
+                        list.appendChild(li);
+                    });
+
+                    section.appendChild(list);
+                    contentDiv.appendChild(section);
+                });
+            }
+
+            // 更新统计信息
+            function updateStats(data) {
+                const semesterCount = Object.keys(data).length;
+                let resourceCount = 0;
+
+                Object.values(data).forEach((semester) => {
+                    resourceCount += semester.items.length;
+                });
+
+                document.getElementById("stats-text").textContent =
+                    `${semesterCount} 个学期 · ${resourceCount} 个资源`;
+            }
+
+            // 搜索功能
+            document
+                .getElementById("search-input")
+                .addEventListener("input", (e) => {
+                    const searchTerm = e.target.value.toLowerCase().trim();
+
+                    if (!searchTerm) {
+                        renderContent(allData);
+                        document
+                            .getElementById("content")
+                            .classList.remove("hidden");
+                        document
+                            .getElementById("no-results")
+                            .classList.add("hidden");
+                        return;
+                    }
+
+                    // 过滤数据
+                    const filtered = {};
+                    let hasResults = false;
+
+                    Object.entries(allData).forEach(([semester, data]) => {
+                        const matchedItems = data.items.filter(
+                            (item) =>
+                                item.name.toLowerCase().includes(searchTerm) ||
+                                semester.toLowerCase().includes(searchTerm),
+                        );
+
+                        if (matchedItems.length > 0) {
+                            filtered[semester] = {
+                                ...data,
+                                items: matchedItems,
+                            };
+                            hasResults = true;
+                        }
+                    });
+
+                    if (hasResults) {
+                        renderContent(filtered);
+                        document
+                            .getElementById("content")
+                            .classList.remove("hidden");
+                        document
+                            .getElementById("no-results")
+                            .classList.add("hidden");
+                    } else {
+                        document
+                            .getElementById("content")
+                            .classList.add("hidden");
+                        document
+                            .getElementById("no-results")
+                            .classList.remove("hidden");
+                    }
+                });
+
+            // 页面加载时初始化
+            window.addEventListener("DOMContentLoaded", loadData);
+        </script>
+    </body>
+</html>
