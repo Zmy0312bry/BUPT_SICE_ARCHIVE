@@ -42,6 +42,15 @@
 - [计算机原理实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8A/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C)
 - [通信电子电路实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8A/%E9%80%9A%E4%BF%A1%E7%94%B5%E5%AD%90%E7%94%B5%E8%B7%AF%E5%AE%9E%E9%AA%8C)
 
+大三下：
+- [Linux操作系统](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F)
+- [区块链技术与应用课件](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%BA%94%E7%94%A8%E8%AF%BE%E4%BB%B6)
+- [无线通信中的人工智能](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1%E4%B8%AD%E7%9A%84%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD)
+- [现代通信技术](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%8E%B0%E4%BB%A3%E9%80%9A%E4%BF%A1%E6%8A%80%E6%9C%AF)
+- [综合实验](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C)
+- [通信系统建模与仿真](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E9%80%9A%E4%BF%A1%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F)
+- [音频信号处理](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E9%9F%B3%E9%A2%91%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86)
+
 其他资源：
 - [Tai_Chi](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%85%B6%E4%BB%96%E8%B5%84%E6%BA%90/Tai_Chi)
 - [北邮校名校徽编排 横版中英文.png](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/raw/refs/heads/main/%E5%85%B6%E4%BB%96%E8%B5%84%E6%BA%90/%E5%8C%97%E9%82%AE%E6%A0%A1%E5%90%8D%E6%A0%A1%E5%BE%BD%E7%BC%96%E6%8E%92%20%E6%A8%AA%E7%89%88%E4%B8%AD%E8%8B%B1%E6%96%87.png)

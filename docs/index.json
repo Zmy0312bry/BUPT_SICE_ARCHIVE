@@ -118,6 +118,47 @@
       }
     ]
   },
+  "大三下": {
+    "type": "dir",
+    "url": "https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B",
+    "items": [
+      {
+        "name": "Linux操作系统",
+        "type": "dir",
+        "url": "https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"
+      },
+      {
+        "name": "区块链技术与应用课件",
+        "type": "dir",
+        "url": "https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%BA%94%E7%94%A8%E8%AF%BE%E4%BB%B6"
+      },
+      {
+        "name": "无线通信中的人工智能",
+        "type": "dir",
+        "url": "https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1%E4%B8%AD%E7%9A%84%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD"
+      },
+      {
+        "name": "现代通信技术",
+        "type": "dir",
+        "url": "https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%8E%B0%E4%BB%A3%E9%80%9A%E4%BF%A1%E6%8A%80%E6%9C%AF"
+      },
+      {
+        "name": "综合实验",
+        "type": "dir",
+        "url": "https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C"
+      },
+      {
+        "name": "通信系统建模与仿真",
+        "type": "dir",
+        "url": "https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E9%80%9A%E4%BF%A1%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F"
+      },
+      {
+        "name": "音频信号处理",
+        "type": "dir",
+        "url": "https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%B8%89%E4%B8%8B/%E9%9F%B3%E9%A2%91%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86"
+      }
+    ]
+  },
   "大二上": {
     "type": "dir",
     "url": "https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/tree/main/%E5%A4%A7%E4%BA%8C%E4%B8%8A",
