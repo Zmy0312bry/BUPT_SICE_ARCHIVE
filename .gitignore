@@ -6,3 +6,6 @@ simulation
 *.rpt
 *.qws
 .qsys_edit
+.DS_Store
+*.pth
+*.dat

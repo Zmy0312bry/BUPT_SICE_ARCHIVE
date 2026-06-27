@@ -1,0 +1,12 @@
+[project]
+name = "mat2dat"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "h5py>=3.0",
+    "numpy>=1.26",
+]
+[project.optional-dependencies]
+test = ["pytest>=8.0"]

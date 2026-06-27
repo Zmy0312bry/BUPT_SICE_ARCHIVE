@@ -1,0 +1,68 @@
+digraph QPSK_Demodulator {
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", fontsize=9, shape=box, style="rounded,filled", penwidth=1.0, margin="0.08,0.04"];
+    edge [fontname="Helvetica", fontsize=8, penwidth=1.0];
+    nodesep=0.25;
+    ranksep=0.35;
+
+    // ── Row 0: Inputs ──
+    input [label=".dat 文件\nIQIQ uint8", shape=cds, fillcolor="#e8e8e8", fontsize=8, width=0.75];
+    yaml [label="YAML 配置\nspan sps alpha basedata", shape=cds, fillcolor="#e8e8e8", fontsize=8, width=1.0];
+
+    // ── Row 1: Stages 1-3 ──
+    s1 [label="1. 输入加载\n────────\nuint8→complex", fillcolor="#d4e6f1", width=0.9];
+    s2 [label="2. 去直流\n────────\n减去复数均值", fillcolor="#d5f5e3", width=0.9];
+    s3 [label="3. 载波频偏估计与矫正\n────────\nx⁴→FFT →Δf→e^(-j2πΔfn)", fillcolor="#d4e6f1", width=1.35];
+
+    input -> s1;
+    s1 -> s2;
+    s2 -> s3;
+
+    // ── Row 2: Stages 4-6 ──
+    s4 [label="4. RRC 匹配滤波\n────────\n生成RRC FIR\n(α,span,sps)\n匹配滤波卷积", fillcolor="#d5f5e3", width=0.95];
+    s5 [label="5. 最佳采样点选择\n────────\n4个多相分支\npreamble相关峰\n选最强", fillcolor="#d4e6f1", width=0.95];
+    s6 [label="6. 前导码同步检测\n────────\n63符号归一化互相关\n峰值检测(阈值+间距)\n每帧独立相位选择", fillcolor="#d5f5e3", width=1.2];
+
+    s3 -> s4;
+    s4 -> s5;
+    s5 -> s6;
+
+    // ── Row 3: Stages 7-10 ──
+    s7 [label="7. 帧长估计与组数计算\n────────\n峰间距中位数→帧长\n组数=(帧长-63)/每组", fillcolor="#d4e6f1", width=1.1];
+    s8 [label="8. 导频辅助信道估计与补偿\n────────\n导频: h=rx/known\n线性插值: 全载荷响应\n补偿: corrected=rx/h", fillcolor="#d5f5e3", width=1.25];
+    s9 [label="9. QPSK解映射与文本恢复\n────────\nGray→2bit→8bit→ASCII\n正则提取basedata+编号", fillcolor="#d4e6f1", width=1.15];
+    s10 [label="10. 误码率统计\n────────\n多数投票→base_data\n重构期望比特→逐位比对\nBER=误比特/总比特", fillcolor="#d5f5e3", width=1.05];
+
+    s6 -> s7;
+    s7 -> s8;
+    s8 -> s9;
+    s9 -> s10;
+
+    // ── Row 4: Outputs ──
+    output_text [label="载荷文本", shape=note, fillcolor="#fdebd0", fontsize=8, width=0.65];
+    output_ber  [label="BER误码率", shape=note, fillcolor="#fdebd0", fontsize=8, width=0.65];
+    output_burst [label="burst_time", shape=note, fillcolor="#fdebd0", fontsize=8, width=0.7];
+
+    s9  -> output_text;
+    s10 -> output_ber;
+    s7  -> output_burst [style=dashed, minlen=1];
+
+    // ── YAML parameter feeds ──
+    yaml -> s4 [style=dashed, color="#7f8c8d", fontsize=7, label="span sps alpha"];
+    yaml -> s9 [style=dashed, color="#7f8c8d", fontsize=7, label="basedata"];
+
+    // ── Rank constraints for row alignment ──
+    { rank=same; input; yaml; }
+    { rank=same; s1; s2; s3; }
+    { rank=same; s4; s5; s6; }
+    { rank=same; s7; s8; s9; s10; }
+    { rank=same; output_text; output_ber; output_burst; }
+
+    // ── Invisible edges for vertical alignment ──
+    input -> s1 [weight=10, style=invis];
+    s2 -> s5 [style=invis];
+    s5 -> s8 [style=invis];
+    s9 -> output_burst [style=invis];
+    yaml -> s1 [style=invis];
+}

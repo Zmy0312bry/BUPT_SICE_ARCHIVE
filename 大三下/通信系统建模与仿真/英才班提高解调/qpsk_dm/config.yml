@@ -1,0 +1,9 @@
+protocol: file:///Users/april/Desktop/CodeFolder/CommunicationSimulation/qpsk_dm/data.dat
+span: 10
+sps: 4
+alpha: 0.4
+basedata: LZHLMCLYHBLSQT
+verbose: false
+protected:
+  asnwer:
+    burst_time: 10

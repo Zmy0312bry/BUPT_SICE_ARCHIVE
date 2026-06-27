@@ -1,0 +1,20 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Large binary IQ files
+*.dat
+*.mat
+
+# OpenCode session artifacts
+.sisyphus/
+参考代码/
+.ruff_cache
+output/

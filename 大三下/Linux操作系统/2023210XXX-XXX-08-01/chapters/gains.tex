@@ -1,0 +1,64 @@
+\section{课程收获}
+
+\begin{frame}{包管理模式}
+\begin{itemize}
+  \item 掌握了 Ubuntu/Debian 体系的包管理：\texttt{apt} 负责在线源管理，\texttt{dpkg} 处理本地包
+  \item \texttt{apt update/upgrade} 更新索引与升级系统，\texttt{install/remove/purge} 管理软件生命周期
+  \item \texttt{search/show/depends} 快速查询包信息与依赖关系——不再需要打开网页搜索
+  \item 配置清华镜像源时了解了 DEB822 格式，理解了 \texttt{/etc/apt/sources.list.d/} 的结构
+  \item 遇到过一次 \texttt{dpkg --configure -a} 修复依赖断裂——从报错到解决的过程让我对 dpkg 底层机制有了切身体会
+  \item 还顺带配置了 oh-my-zsh：换主题、加插件（git、z、syntax-highlighting），终端体验大幅提升
+\end{itemize}
+\end{frame}
+
+\begin{frame}{文件权限深入}
+\begin{itemize}
+  \item 一开始只知道 r=读 / w=写 / x=执行，实验后才发现 r/w/x 对文件和目录的语义完全不同
+  \item 对目录而言：r 可列出内容但无法 cd，x 可进入但无法 ls——这两者独立控制
+  \item 作业中手动创建了 000 到 777 全部 8 种文件 + 8 种目录，逐个测试——Permission denied 出现的位置比书上说的要复杂
+  \item \textbf{SUID/SGID} 是这次学习的新概念：\texttt{/usr/bin/passwd} 和 \texttt{/usr/bin/su} 上有 SUID 位，普通用户借此临时获得 root 权限
+  \item 这让我意识到 Linux 安全不是靠「禁止」，而是靠\textbf{精确的权限机制设计}——非常精巧
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Vi 操作进阶}
+\begin{itemize}
+  \item 入门前只会 \texttt{i} 进入插入模式、\texttt{:wq!} 强制保存退出，甚至连怎么删除一行都不知道
+  \item 20 项渐进练习后，掌握了：h/j/k/l 导航、w/b 按词跳转、dd/yy/p 剪切复制粘贴、u 撤销
+  \item 更高级的：Visual 模式多行选择、q 宏录制批量操作、\texttt{/} 和 \texttt{:s/\%s} 搜索替换
+  \item 最重要的是发现了 \textbf{Cheat Sheet} 这个东西——一张图涵盖了常用键位，贴在显示器旁边比反复查 man 高效太多
+  \item 现在日常用 Neovim + LazyVim 写 Markdown 和 Shell 脚本，基本实现了不离开键盘的编辑体验
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Shell 深入理解}
+\begin{itemize}
+  \item 环境变量方面：\texttt{\$HOME}、\texttt{\$PATH}、\texttt{\$?}（上条命令返回值）、\texttt{\$LANG} 等在作业中反复使用
+  \item 通过设置 \texttt{PS1} 自定义了终端 prompt——颜色、用户名、当前路径一目了然，不再只是单调的 \texttt{\$}
+  \item 理解了 \texttt{source script.sh} 和 \texttt{./script.sh} 的关键区别：前者在\textbf{当前 Shell} 中执行（变量会保留），后者启动子 Shell（变量随子进程消亡）
+  \item 工具链从作业 06/07 中学习了很多：\texttt{tr} 字符转换、\texttt{grep} 模式过滤、\texttt{sort | uniq -c} 排序聚合
+  \item 课外还自学了：\texttt{jq} 处理 JSON、\texttt{whatis} 快速看命令用途、\texttt{man} 深入查阅、\texttt{su} 切换用户
+  \item RFC 2460 词频统计的管道组合和 Ramanujan 公式计算 PI（\texttt{bc -l} 200 位精度），是两段印象最深的操作
+\end{itemize}
+\end{frame}
+
+\begin{frame}{LaTeX 基础}
+\begin{itemize}
+  \item 通过本课程首次系统接触 LaTeX 排版——本篇总结报告就是用 Beamer 写的
+  \item \textbf{Beamer}：理解了 frame 的概念、section 分章节、\texttt{\textbackslash metroset} 定制主题样式
+  \item 用 \texttt{ctex} 宏包解决了中文排版，\texttt{minted} 做代码高亮，\texttt{booktabs} 画专业表格
+  \item \textbf{cetz}：尝试了用 cetz 宏包在 LaTeX 里画流程图，比外部绘图工具更精确、和文字排版一体化
+  \item 体会是 LaTeX 学习曲线较陡，但一旦配置好模板，排版质量和效率远超 Word/Pages
+\end{itemize}
+\end{frame}
+
+\begin{frame}{CMake / Make 的用法}
+\begin{itemize}
+  \item 在本次 LaTeX 项目中第一次实战使用 \texttt{Makefile} 管理编译流程
+  \item 写法上：定义变量（\texttt{MAIN}, \texttt{SRC}, \texttt{PDF}）、声明依赖（\texttt{\$(PDF): \$(SRC)}）、编写规则（\texttt{latexmk -xelatex}）
+  \item 理解了 \texttt{.PHONY} 的作用——区分文件名和目标名，避免 \texttt{make clean} 和 \texttt{clean} 文件冲突
+  \item \texttt{make} 一键编译、\texttt{make clean} 清理辅助文件、\texttt{make distclean} 彻底清除——比手动敲 xelatex 三次优雅得多
+  \item 对 CMake 也有了初步了解：它是 Makefile 的高层抽象，通过 \texttt{CMakeLists.txt} 自动生成跨平台的构建脚本
+  \item 总结下来：小项目用 Makefile 足够，跨平台大工程才需要 CMake——现在两个都会用了
+\end{itemize}
+\end{frame}

@@ -1,0 +1,44 @@
+\documentclass[10pt,aspectratio=43]{beamer}
+
+\usetheme{metropolis}
+
+\usepackage{ctex}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{minted}
+\usepackage{hyperref}
+
+\metroset{
+  background=light,
+  progressbar=frametitle,
+  numbering=fraction,
+  sectionpage=progressbar,
+  subsectionpage=none
+}
+
+\InputIfFileExists{build/hash.tex}{}{}
+
+\title{Linux 课程学习总结}
+\subtitle{收获 · 感想 · 建议}
+\author{赵熠卓 \\ 学号：2023210314}
+\date{\today \\[0.2cm] \tiny SHA256: \texttt{\sourcehash}}
+\institute{}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{目录}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+\input{chapters/gains}
+\input{chapters/reflections}
+\input{chapters/suggestions}
+
+\begin{frame}[standout]
+  谢谢
+\end{frame}
+
+\end{document}

@@ -1,0 +1,72 @@
+digraph QPSK_Modulation {
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", fontsize=10, shape=box, style="rounded,filled", penwidth=1.2];
+    edge [fontname="Helvetica", fontsize=9, penwidth=1.0];
+    nodesep=0.25;
+    ranksep=0.3;
+
+    // ── Inputs ──
+    basedata [label="base_data\n(字符串)", shape=cds, fillcolor="#e8e8e8", fontsize=9, width=0.9];
+    burst    [label="burst_time\n(重复组数)", shape=cds, fillcolor="#e8e8e8", fontsize=9, width=0.9];
+    params   [label="调制参数\n(α, span, sps)", shape=cds, fillcolor="#e8e8e8", fontsize=9, width=0.9];
+
+    // ── Step 1: Generate groups ──
+    s1 [label="1. 生成数据组\n──────────\nburst_time 组\nbase_data + {:03d} + \\n\n编号递增 001,002,…", fillcolor="#d4e6f1", width=1.8];
+
+    basedata -> s1;
+    burst -> s1;
+
+    // ── Step 2: ASCII encode ──
+    s2 [label="2. ASCII 编码\n──────────\n每个字符 → 8 bit\n每 2 bit → 1 个\nQPSK 符号 (Gray)", fillcolor="#d5f5e3", width=1.8];
+
+    s1 -> s2;
+
+    // ── Step 3: Insert reference symbols ──
+    s3 [label="3. 插入参考符号\n──────────\n每 4 个数据符号\n插入 1 个参考符号\nref_seq = [0,1,3,2,…]\n每组独立从头循环", fillcolor="#d4e6f1", width=1.8];
+
+    s2 -> s3;
+
+    // ── Ref seq source ──
+    refseq [label="ref_seq\n16 符号循环\nGray 映射后\nQPSK 符号", shape=cds, fillcolor="#f9e79f", fontsize=8, width=0.95];
+    refseq -> s3 [style=dashed, color="#7f8c8d"];
+
+    // ── Step 4: Prepend preamble ──
+    s4 [label="4. 添加前导码\n──────────\n63 符号 BPSK\nm 序列\n(1→1+1j, -1→-1-1j)", fillcolor="#d5f5e3", width=1.8];
+
+    s3 -> s4;
+
+    preamble [label="preamble\n63 符号\nBPSK", shape=cds, fillcolor="#f9e79f", fontsize=8, width=0.9];
+    preamble -> s4 [style=dashed, color="#7f8c8d"];
+
+    // ── Step 5: RRC pulse shaping ──
+    s5 [label="5. RRC 脉冲成型\n──────────\n根升余弦滤波器\n参数: α, span, sps\n连续 IQ 波形输出", fillcolor="#d4e6f1", width=1.8];
+
+    s4 -> s5;
+    params -> s5 [style=dashed, color="#7f8c8d"];
+
+    // ── Output ──
+    output [label="IQ 采样信号\n(.mat / .dat)", shape=note, fillcolor="#fdebd0", fontsize=10, width=1.2];
+    s5 -> output;
+
+    // ── Frame structure annotation ──
+    subgraph cluster_frame {
+        label="一帧结构";
+        fontsize=9;
+        style=dashed;
+        bgcolor="#f4f6f6";
+        frame [label="preamble (63) | symbol_map(1) | symbol_map(2) | … | symbol_map(burst_time)", shape=record, fontsize=8, fillcolor="white", style="solid", width=3.5];
+    }
+
+    // ── Legend ──
+    subgraph cluster_legend {
+        label="图例";
+        fontsize=9;
+        style=dashed;
+        bgcolor="#f4f6f6";
+        l1 [label="数据处理", fillcolor="#d4e6f1", shape=box, fontsize=9, width=0.85];
+        l2 [label="编码映射", fillcolor="#d5f5e3", shape=box, fontsize=9, width=0.85];
+        l3 [label="已知序列", fillcolor="#f9e79f", shape=cds, fontsize=9, width=0.85];
+        l4 [label="输出", fillcolor="#fdebd0", shape=note, fontsize=9, width=0.85];
+    }
+}

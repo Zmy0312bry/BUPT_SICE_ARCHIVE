@@ -1,0 +1,22 @@
+{
+  "dat_path": "/Users/april/Desktop/CodeFolder/CommunicationSimulation/qpsk_dm/data.dat",
+  "num_samples": 3000000,
+  "duration_s": 1.25,
+  "sample_rate_hz": 2400000,
+  "alpha": 0.4,
+  "span": 10,
+  "sps": 4,
+  "carrier_offset_hz": 7935.905456542969,
+  "best_timing_phase": 1,
+  "max_preamble_corr": 0.9982590370103026,
+  "detected_frames": 779,
+  "decoded_frames": 778,
+  "frame_length_symbols": 963,
+  "burst_time": 10,
+  "base_data_len": 14,
+  "basedata_config": "LZHLMCLYHBLSQT",
+  "basedata_inferred": "LZHLMCLYHBLSQT",
+  "ber": 0.0,
+  "bit_errors": 0,
+  "bit_count": 1120320
+}

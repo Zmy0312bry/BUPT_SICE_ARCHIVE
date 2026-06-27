@@ -1,0 +1,28 @@
+\section{课程建议}
+
+\begin{frame}{环境与版本控制}
+\begin{itemize}
+  \item \textbf{使用开发容器（Dev Container）统一实验环境}：
+    \begin{itemize}
+      \item 目前学生各自安装 VirtualBox + Ubuntu，版本和配置差异会导致各种环境问题
+      \item 建议提供一个预配置的 Dev Container（基于 VS Code / Cursor 的 devcontainer.json），学生一键启动即可获得完全一致的 Ubuntu 环境
+      \item 容器内预装好 apt 镜像源、Zsh/oh-my-zsh、Vim/Neovim 等课程工具，省去作业 02 的大量配置时间
+      \item 保证所有学生在同一套环境下实验，减少「在我机器上能跑」的环境差异问题
+    \end{itemize}
+  \item \textbf{增加 VCS 版本控制系统介绍}：
+    \begin{itemize}
+      \item SVN：了解集中式版本控制的原理，理解与 Git 的差异
+      \item Git：分布式版本控制，建议第一次作业就引入，逐步深入到分支管理、rebase -i、冲突解决
+      \item jj（Jujutsu）：兼容 Git 仓库的新一代工具，操作更直觉化——值得关注
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{用 PR 替代 ZIP 提交}
+\begin{itemize}
+  \item 课程提供一个作业仓库，每次作业作为独立目录；学生 fork 后在自己的分支上完成
+  \item 提交时发起 Pull Request，助教在 PR 页面直接进行 Code Review——批注具体代码行、提出修改建议
+  \item 学生根据 review 意见修改后 push 更新，迭代直到通过后 merge——这本身就是业界标准的工作流程
+  \item 这套流程让学生从第一门课起就习惯版本控制、Code Review 和协作开发，比任何单独的 Git 练习课都有效
+\end{itemize}
+\end{frame}

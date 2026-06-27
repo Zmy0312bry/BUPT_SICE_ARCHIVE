@@ -1,0 +1,44 @@
+================================================================
+QPSK Demodulator — data.dat
+================================================================
+  Config:   config.yml
+  Data:     /Users/april/Desktop/CodeFolder/CommunicationSimulation/qpsk_dm/data.dat
+  Params:   alpha=0.4, span=10, sps=4
+  BaseData: 'LZHLMCLYHBLSQT' (len=14)
+  SR:       2400000 Hz
+  Samples:  3000000
+  Duration: 1.250 s
+  WARNING: duration < 2.0s, BER stats may be insufficient
+  DC offset removed
+  Carrier offset: 7935.905 Hz
+findfont: Failed to find font weight bold, now using 600.
+  RRC filter: 41 taps (alpha=0.4, span=10, sps=4)
+  Best timing phase: 2/4
+  Max preamble correlation: 0.998259
+  Detected frames: 779
+  Max correlation: 0.998259
+  Frame length: 963 QPSK symbols
+findfont: Failed to find font weight bold, now using 600.
+findfont: Failed to find font weight bold, now using 600.
+  Groups per frame (burst_time): 10
+  Successfully decoded: 778 frames
+  Inferred base_data: 'LZHLMCLYHBLSQT'
+  BER: 0.000000e+00 (0 errors / 1120320 bits)
+
+  Frame 1 payload (result/frame_1_payload.txt):
+  ------------------------------------------------
+    LZHLMCLYHBLSQT001
+    LZHLMCLYHBLSQT002
+    LZHLMCLYHBLSQT003
+    LZHLMCLYHBLSQT004
+    LZHLMCLYHBLSQT005
+    LZHLMCLYHBLSQT006
+    LZHLMCLYHBLSQT007
+    LZHLMCLYHBLSQT008
+    LZHLMCLYHBLSQT009
+    LZHLMCLYHBLSQT010
+  [FRAME 1] start=140, corr=0.983378
+  [FRAME 2] start=1103, corr=0.984505
+  [FRAME 3] start=2066, corr=0.987542
+
+  Output: /Users/april/Desktop/CodeFolder/CommunicationSimulation/qpsk_dm/result

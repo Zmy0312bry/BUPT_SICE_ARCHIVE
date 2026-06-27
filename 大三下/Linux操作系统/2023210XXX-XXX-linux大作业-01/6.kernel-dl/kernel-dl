@@ -1,0 +1,483 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+readonly DB_DIR="${HOME}/.kernel_manager"
+readonly DB_FILE="${DB_DIR}/db"
+readonly TMP_DIR="${DB_DIR}/tmp"
+readonly GH_API="https://api.github.com/repos/torvalds/linux/git/refs/tags"
+readonly MIRROR="${LINUX_DIST_MIRROR:-https://mirrors.tuna.tsinghua.edu.cn}"
+
+VERSION=""
+INSTALL_DIR=""
+RESUME=false
+SPEED_LIMIT=""
+THREADS=1
+CLEAN_VERSION=""
+LIST_LOCAL=false
+LIST_REMOTE=false
+
+die()  { echo "错误: $*" >&2; exit 1; }
+info() { echo "$*"; }
+warn() { echo "警告: $*" >&2; }
+
+notify_send() {
+    command -v notify-send &>/dev/null && notify-send "$1" "$2" 2>/dev/null || true
+}
+
+init() {
+    mkdir -p "${DB_DIR}" "${TMP_DIR}"
+    if [[ ! -f "${DB_FILE}" ]] || ! jq empty "${DB_FILE}" &>/dev/null; then
+        echo '{"versions":[]}' > "${DB_FILE}"
+    fi
+}
+
+usage() {
+    cat << 'EOF'
+=== Linux内核下载工具 ===
+usage: kernel-dl [选项]
+选项:
+  -q              列出可用内核版本
+  -d VER -i DIR   下载指定版本到指定目录
+  -r              断点续传 (需配合 -d -i 使用)
+  -l              列出本地已下载版本
+  -c VER          清理指定版本
+  -j N            使用N个并发连接加速下载 (默认: 1)
+  -s SPEED        限制下载速度 (e.g., 500k, 2m)
+EOF
+    exit 0
+}
+
+check_deps() {
+    local missing=()
+    command -v curl &>/dev/null || missing+=("curl")
+    command -v jq   &>/dev/null || missing+=("jq")
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        echo "错误: 缺少必要依赖: ${missing[*]}" >&2
+        echo "请安装后重试:" >&2
+        for pkg in "${missing[@]}"; do
+            case "$pkg" in
+                curl) echo "  apt install curl   / yum install curl" >&2 ;;
+                jq)   echo "  apt install jq     / yum install jq" >&2 ;;
+            esac
+        done
+        exit 1
+    fi
+    command -v sha256sum &>/dev/null || warn "sha256sum 不可用，将跳过文件校验"
+    command -v notify-send &>/dev/null || warn "notify-send 不可用，将跳过桌面通知"
+}
+
+fetch_tags() {
+    local url="${GH_API}?per_page=100" tags=""
+    while [[ -n "$url" ]]; do
+        local resp link hdr
+        hdr=$(mktemp)
+        resp=$(curl -sL --connect-timeout 10 -D "$hdr" "$url" 2>/dev/null)
+        link=$(grep -i '^link:' "$hdr" | sed -n 's/.*<\([^>]*\)>; rel="next".*/\1/p')
+        rm -f "$hdr"
+
+        if echo "$resp" | jq -e 'type == "object" and has("message")' &>/dev/null; then
+            warn "$(echo "$resp" | jq -r '.message')"
+            break
+        fi
+        local count
+        count=$(echo "$resp" | jq 'length' 2>/dev/null)
+        [[ -z "$count" || "$count" -eq 0 ]] && break
+        tags+=$(echo "$resp" | jq -r '.[].ref' | sed 's|refs/tags/||')
+        tags+=$'\n'
+        url="$link"
+    done
+    echo "$tags" | grep -E '^v[0-9]+\.[0-9]+$' | sed 's/^v//' | sort -t. -k1,1nr -k2,2nr | uniq
+}
+
+parse_releases() {
+    local data
+    data=$(fetch_tags) || die "无法获取版本列表"
+    while IFS= read -r ver; do
+        [[ -n "$ver" ]] && echo "$ver"
+    done <<< "$data"
+}
+
+list_remote() {
+    local data
+    data=$(parse_releases) || die "解析版本列表失败"
+    echo ""
+    echo "可用内核版本:"
+    echo "$data" | tr '\n' ' '
+    echo ""
+    echo ""
+}
+
+version_exists() {
+    local target="$1"
+    local data
+    data=$(fetch_tags) || return 1
+    while IFS= read -r ver; do
+        [[ "$ver" == "$target" ]] && return 0
+    done <<< "$data"
+    return 1
+}
+
+get_download_url() {
+    local ver="$1"
+    local major="${ver%%.*}"
+    echo "${MIRROR}/kernel/v${major}.x/linux-${ver}.tar.gz"
+}
+
+get_file_size() {
+    local url="$1"
+    curl -sIL --connect-timeout 10 "$url" 2>/dev/null | \
+        awk 'BEGIN{c=0} /^HTTP/{c=$2} /^content-length:/{if(c>=200&&c<300)s=$2} END{print s+0}'
+}
+
+format_size() {
+    local bytes="$1"
+    if [[ $bytes -ge 1073741824 ]]; then
+        awk "BEGIN {printf \"%.1fGB\", $bytes/1073741824}"
+    elif [[ $bytes -ge 1048576 ]]; then
+        awk "BEGIN {printf \"%.1fMB\", $bytes/1048576}"
+    elif [[ $bytes -ge 1024 ]]; then
+        awk "BEGIN {printf \"%.1fKB\", $bytes/1024}"
+    else
+        echo "${bytes}B"
+    fi
+}
+
+format_speed() {
+    local bps="$1"
+    if [[ $bps -ge 1073741824 ]]; then
+        awk "BEGIN {printf \"%.1fGB/s\", $bps/1073741824}"
+    elif [[ $bps -ge 1048576 ]]; then
+        awk "BEGIN {printf \"%.1fMB/s\", $bps/1048576}"
+    elif [[ $bps -ge 1024 ]]; then
+        awk "BEGIN {printf \"%.1fKB/s\", $bps/1024}"
+    else
+        echo "${bps}B/s"
+    fi
+}
+
+build_bar() {
+    local pct="$1" width="${2:-20}"
+    local filled=$((pct * width / 100))
+    [[ $filled -gt $width ]] && filled=$width
+    local empty=$((width - filled))
+    local bar=""
+    [[ $filled -gt 0 ]] && bar=$(printf "%${filled}s" | tr ' ' '#')
+    [[ $empty -gt 0 ]] && bar+=$(printf "%${empty}s" | tr ' ' '.')
+    echo "$bar"
+}
+
+show_progress() {
+    local current="$1" total="$2" bps="$3"
+    local pct=$((current * 100 / total))
+    [[ $pct -gt 100 ]] && pct=100
+    local bar=$(build_bar "$pct")
+    local eta="--"
+    [[ $bps -gt 0 ]] && eta="$(((total - current) / bps))s"
+    printf "\r[%s] %d%% (%s/%s) 速 度 : %s 剩 余 : %s  %-40s\r" \
+        "$bar" "$pct" \
+        "$(format_size $current)" \
+        "$(format_size $total)" \
+        "$(format_speed $bps)" \
+        "$eta" ""
+}
+
+download_single() {
+    local url="$1" output="$2" resume="$3" limit="$4"
+
+    local total_size
+    total_size=$(get_file_size "$url")
+
+    local opts=(-sL --connect-timeout 30 --retry 3 -o "${output}.part")
+    [[ "$resume" == "true" ]] && opts+=(-C -)
+    [[ -n "$limit" ]] && opts+=(--limit-rate "$limit")
+
+    curl "${opts[@]}" "$url" &
+    local pid=$!
+
+    local start_time=$(date +%s)
+    local init_sz=0
+    [[ -f "${output}.part" ]] && init_sz=$(stat -c%s "${output}.part" 2>/dev/null || echo 0)
+
+    while kill -0 "$pid" 2>/dev/null; do
+        local cur now elapsed bps
+        cur=$(stat -c%s "${output}.part" 2>/dev/null || echo 0)
+        now=$(date +%s)
+        elapsed=$((now - start_time))
+        [[ $elapsed -eq 0 ]] && elapsed=1
+        bps=$(((cur - init_sz) / elapsed))
+
+        if [[ "$total_size" -gt 0 ]]; then
+            show_progress "$cur" "$total_size" "$bps"
+        else
+            printf "\r已下载: %s  速 度 : %s  %-40s\r" "$(format_size $cur)" "$(format_speed $bps)" ""
+        fi
+        sleep 0.2
+    done
+
+    wait "$pid"
+    local rc=$?
+
+    if [[ $rc -eq 0 ]]; then
+        mv "${output}.part" "$output"
+        if [[ "$total_size" -gt 0 ]]; then
+            printf "\r[%s] 100%% (%s/%s) 速 度 : - 剩 余 : 0s\n" \
+                "$(build_bar 100)" "$(format_size $(stat -c%s "$output" 2>/dev/null || echo 0))" "$(format_size $total_size)"
+        else
+            printf "\r下载完成: %s  %-40s\n" "$(format_size $(stat -c%s "$output" 2>/dev/null || echo 0))" ""
+        fi
+    else
+        printf "\r下载中断，可使用 -r 续传%50s\n" ""
+        return 1
+    fi
+}
+
+download_multi() {
+    local url="$1" output="$2" threads="$3" resume="$4" limit="$5"
+
+    local total_size
+    total_size=$(get_file_size "$url")
+    [[ "$total_size" -eq 0 ]] && {
+        warn "无法获取文件大小，回退到单线程下载"
+        download_single "$url" "$output" "$resume" "$limit"
+        return $?
+    }
+
+    local seg_size=$((total_size / threads))
+    local pids=() seg_files=()
+
+    for ((i=0; i<threads; i++)); do
+        local start=$((i * seg_size))
+        local end
+        if [[ $i -eq $((threads - 1)) ]]; then
+            end=$((total_size - 1))
+        else
+            end=$(((i + 1) * seg_size - 1))
+        fi
+
+        local seg="${output}.seg${i}"
+        seg_files+=("$seg")
+
+        local range_start=$start
+        if [[ "$resume" == "true" && -f "$seg" ]]; then
+            local existing=$(stat -c%s "$seg" 2>/dev/null || echo 0)
+            range_start=$((start + existing))
+        else
+            rm -f "$seg"
+        fi
+
+        local range="${range_start}-${end}"
+        [[ $range_start -ge $end ]] && continue
+
+        local curl_opts=(-sL --connect-timeout 30 --retry 3 --range "$range" -o "$seg")
+        [[ -n "$limit" ]] && curl_opts+=(--limit-rate "$limit")
+        curl "${curl_opts[@]}" "$url" &
+        pids+=($!)
+    done
+
+    local start_time=$(date +%s)
+    local init_sz=0
+    for f in "${seg_files[@]}"; do
+        init_sz=$((init_sz + $(stat -c%s "$f" 2>/dev/null || echo 0)))
+    done
+
+    local all_done=false
+    while ! $all_done; do
+        local total_down=0
+        all_done=true
+        for idx in "${!pids[@]}"; do
+            kill -0 "${pids[$idx]}" 2>/dev/null && all_done=false
+            total_down=$((total_down + $(stat -c%s "${seg_files[$idx]}" 2>/dev/null || echo 0)))
+        done
+        local now=$(date +%s)
+        local elapsed=$((now - start_time))
+        [[ $elapsed -eq 0 ]] && elapsed=1
+        local bps=$(((total_down - init_sz) / elapsed))
+        show_progress "$total_down" "$total_size" "$bps"
+        sleep 0.2
+    done
+
+    local failed=false
+    for pid in "${pids[@]}"; do
+        wait "$pid" || failed=true
+    done
+
+    if $failed; then
+        printf "\r下载中断，可使用 -r 续传%50s\n" ""
+        return 1
+    fi
+
+    rm -f "$output"
+    for f in "${seg_files[@]}"; do
+        cat "$f" >> "$output"
+    done
+    rm -f "${seg_files[@]}"
+
+    printf "\r[%s] 100%% (%s/%s) 速 度 : - 剩 余 : 0s\n" \
+        "$(build_bar 100)" "$(format_size $total_size)" "$(format_size $total_size)"
+}
+
+db_load() { cat "${DB_FILE}" 2>/dev/null || echo '{"versions":[]}'; }
+
+db_add() {
+    local ver="$1" path="$2" sha="$3"
+    local date_str
+    date_str=$(date '+%Y-%m-%d %H:%M:%S')
+    local tmp="${DB_FILE}.tmp"
+    db_load | jq --arg v "$ver" --arg p "$path" --arg d "$date_str" --arg s "$sha" \
+        '(.versions // []) | map(select(.version != $v)) as $rest |
+         {versions: ($rest + [{"version":$v,"path":$p,"date":$d,"sha256":$s}])}' > "$tmp" && mv "$tmp" "${DB_FILE}"
+}
+
+db_remove() {
+    local ver="$1"
+    local tmp="${DB_FILE}.tmp"
+    db_load | jq --arg v "$ver" 'del(.versions[]? | select(.version == $v))' > "$tmp" && mv "$tmp" "${DB_FILE}"
+}
+
+db_has() {
+    local ver="$1"
+    db_load | jq -e --arg v "$ver" '.versions[]? | select(.version == $v)' &>/dev/null
+}
+
+db_get_path() {
+    local ver="$1"
+    db_load | jq -r --arg v "$ver" '.versions[]? | select(.version == $v) | .path'
+}
+
+list_local() {
+    local data
+    data=$(db_load | jq -r '.versions[]? | "\(.version)|\(.path)|\(.date)|\(.sha256)"' 2>/dev/null)
+    if [[ -z "$data" ]]; then
+        info "本地没有已下载的内核版本"
+        return
+    fi
+    echo ""
+    echo "=== 本地已下载内核 ==="
+    echo ""
+    printf "  %-16s %-12s %-20s %s\n" "版本" "大小" "下载时间" "SHA256"
+    printf "  %-16s %-12s %-20s %s\n" "----" "----" "--------" "------"
+    while IFS='|' read -r ver path date sha; do
+        [[ -z "$ver" ]] && continue
+        local size="?"
+        [[ -f "$path" ]] && size=$(format_size $(stat -c%s "$path" 2>/dev/null || echo 0))
+        printf "  %-16s %-12s %-20s %s\n" "$ver" "$size" "$date" "${sha:0:16}..."
+    done <<< "$data"
+    echo ""
+}
+
+clean_version() {
+    local ver="$1"
+    if ! db_has "$ver"; then
+        die "版本 ${ver} 不在本地数据库中"
+    fi
+    local path
+    path=$(db_get_path "$ver")
+    [[ -f "$path" ]] && { rm -f "$path"; info "  已删除文件: $path"; }
+    db_remove "$ver" && info "  已从数据库移除版本 ${ver}"
+}
+
+download_version() {
+    local ver="$1" dir="$2"
+    mkdir -p "$dir"
+
+    if ! version_exists "$ver"; then
+        warn "版本 ${ver} 不存在"
+        local data
+        data=$(fetch_tags) 2>/dev/null || true
+        echo "可用版本: $(echo "$data" | tr '\n' ' ')"
+        die "请从上述列表中选择有效版本"
+    fi
+
+    local url
+    url=$(get_download_url "$ver")
+
+    info "版本: ${ver}"
+    info "源:   ${url}"
+    info "目标: ${dir}"
+
+    local output="${dir}/linux-${ver}.tar.gz"
+
+    if [[ "$RESUME" == "true" && -f "$output" ]]; then
+        local sz=$(stat -c%s "$output" 2>/dev/null || echo 0)
+        [[ $sz -gt 1048576 ]] && info "  文件已存在 (${sz} bytes)，将自动校验续传"
+    fi
+
+    if [[ "$RESUME" != "true" ]]; then
+        rm -f "$output" "${output}.part" "${output}".seg*
+    fi
+
+    if [[ "$THREADS" -le 1 ]]; then
+        download_single "$url" "$output" "$RESUME" "$SPEED_LIMIT" || {
+            notify_send "内核下载失败" "linux-${ver}.tar.gz 下载中断"
+            return 1
+        }
+    else
+        download_multi "$url" "$output" "$THREADS" "$RESUME" "$SPEED_LIMIT" || {
+            notify_send "内核下载失败" "linux-${ver}.tar.gz 下载中断"
+            return 1
+        }
+    fi
+
+    local sha
+    sha=$(sha256sum "$output" 2>/dev/null | awk '{print $1}')
+    if [[ -n "$sha" ]]; then
+        info "  SHA256: $sha"
+    else
+        warn "  无法计算 SHA256"
+        sha=""
+    fi
+
+    echo ""
+    info "下载完成: ${output}"
+    db_add "$ver" "$output" "$sha"
+    notify_send "内核下载完成" "linux-${ver}.tar.gz 校验通过"
+}
+
+main() {
+    check_deps
+    init
+
+    local mode=""
+    local args=("$@")
+    local i=0
+
+    while [[ $i -lt ${#args[@]} ]]; do
+        case "${args[$i]}" in
+            -h|--help) usage ;;
+            -q) LIST_REMOTE=true ;;
+            -d) ((i++)); [[ $i -lt ${#args[@]} ]] || die "-d 需要指定版本号"; VERSION="${args[$i]}"; mode="download" ;;
+            -i) ((i++)); [[ $i -lt ${#args[@]} ]] || die "-i 需要指定目标目录"; INSTALL_DIR="${args[$i]}" ;;
+            -r) RESUME=true ;;
+            -l) LIST_LOCAL=true ;;
+            -c) ((i++)); [[ $i -lt ${#args[@]} ]] || die "-c 需要指定版本号"; CLEAN_VERSION="${args[$i]}"; mode="clean" ;;
+            -j) ((i++)); [[ $i -lt ${#args[@]} ]] || die "-j 需要指定并发数"; THREADS="${args[$i]}"
+                [[ "$THREADS" =~ ^[0-9]+$ && "$THREADS" -ge 1 ]] || die "并发数必须为正整数" ;;
+            -s) ((i++)); [[ $i -lt ${#args[@]} ]] || die "-s 需要指定速度限制"; SPEED_LIMIT="${args[$i]}" ;;
+            *)  die "未知参数: ${args[$i]}\n请使用 -h 查看帮助" ;;
+        esac
+        ((i++))
+    done
+
+    [[ $# -eq 0 ]] && usage
+
+    $LIST_REMOTE && list_remote
+    $LIST_LOCAL  && list_local
+
+    if [[ "$mode" == "download" ]]; then
+        [[ -n "$VERSION" ]] || die "缺少版本号 (-d VER)"
+        [[ -n "$INSTALL_DIR" ]] || die "缺少目标目录 (-i DIR)"
+        download_version "$VERSION" "$INSTALL_DIR"
+    fi
+
+    if [[ "$mode" == "clean" ]]; then
+        [[ -n "$CLEAN_VERSION" ]] || die "缺少版本号 (-c VER)"
+        clean_version "$CLEAN_VERSION"
+    fi
+
+    if [[ $# -gt 0 && "$LIST_REMOTE" == false && "$LIST_LOCAL" == false && -z "$mode" ]]; then
+        $RESUME && [[ -z "$VERSION" ]] && warn "-r 需要配合 -d VER -i DIR 使用"
+        usage
+    fi
+}
+
+main "$@"

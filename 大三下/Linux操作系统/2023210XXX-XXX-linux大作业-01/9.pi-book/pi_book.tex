@@ -1,0 +1,126 @@
+\documentclass[UTF8,a4paper,12pt,oneside]{ctexbook}
+
+\usepackage[top=2.5cm, bottom=2cm, left=2.5cm, right=2cm, headheight=15pt]{geometry}
+
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{multicol}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    pdftitle={圆周率数字表},
+    pdfauthor={通信出版社}
+}
+
+\newcommand{\pibooktitle}{圆周率\totaldigits 位表}
+
+% Store current chapter name for header
+\newcommand{\currentchapter}{}
+
+% Start a new digit chapter: page break, TOC entry, store chapter name
+\newcommand{\startchapter}[1]{%
+  \clearpage
+  \renewcommand{\currentchapter}{#1}%
+  \phantomsection
+  \addcontentsline{toc}{chapter}{#1}%
+}
+
+% Output one digit line: page mark + line number + stretch
+\newcommand{\digitsline}[2]{%
+  \markright{#1--#2}%
+  \textcolor{gray}{#1}\hfil
+}
+
+% Anchor target for index hyperlinks (one per 1000-digit block)
+\newcommand{\idxanchor}[1]{%
+  \hypertarget{idx:#1}{}%
+}
+
+% Font wrapper for digit pages: small monospace, tight spacing
+% Font wrapper for digit pages: small monospace, tight spacing
+\newcommand{\digitpagefont}{%
+  \ttfamily
+  \fontsize{6}{7}\selectfont
+  \parskip=0pt
+  \parindent=0pt
+  \parfillskip=0pt plus 1fil
+  \baselineskip=7pt
+  \lineskip=0pt
+  \lineskiplimit=-1000pt
+}
+
+% Header: L=chapter, C=book title, R=page digit range
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\currentchapter}
+\fancyhead[C]{\pibooktitle}
+\fancyhead[R]{\rightmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyfoot[C]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+}
+
+% Custom index environment: two-column, compact, with grouping
+\makeatletter
+\renewenvironment{theindex}{%
+  \clearpage
+  \renewcommand{\currentchapter}{索引}%
+  \markright{}%
+  \chapter*{索引}%
+  \phantomsection
+  \addcontentsline{toc}{chapter}{索引}%
+  \begin{multicols}{2}%
+  \footnotesize
+  \parskip0pt plus .2pt
+  \parindent0pt
+  \setlength{\columnsep}{20pt}%
+  \setlength{\columnseprule}{0.3pt}%
+  \let\item\@idxitem
+}{%
+  \end{multicols}%
+}
+\makeatother
+
+\input{build/total_digits.tex}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\null\vspace{3cm}
+
+{\fontsize{150pt}{180pt}\selectfont $\pi$}
+
+\vspace{2cm}
+
+{\fontsize{32pt}{38pt}\selectfont\bfseries \pibooktitle\par}
+
+\vspace*{\stretch{3}}
+
+{\Large\rule{12cm}{0.5pt}\par}
+
+\vspace{0.5cm}
+
+{\LARGE 通信出版社\par}
+
+\vspace*{\stretch{1}}
+\end{titlepage}
+
+\frontmatter
+\tableofcontents
+
+\mainmatter
+
+\input{build/chapters.tex}
+
+\backmatter
+\input{build/digit_index.tex}
+
+\end{document}
