@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "q-learning"
+version = "0.1.0"
+description = "Q-Learning for MEC task offloading"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "torch",
+    "matplotlib",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/q_learning"]
