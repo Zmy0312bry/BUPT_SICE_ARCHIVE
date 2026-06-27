@@ -2,6 +2,8 @@
 
 欢迎来到我们的 GitHub 仓库！希望我们的资料能帮到有需要的人😉
 
+> 本仓库的网页链接：https://zmy0312bry.github.io/BUPT_SICE_ARCHIVE/
+
 ## 索引 Index
 大一上：
 - [C++ in PTA.md(点击下载)](https://github.com/Zmy0312bry/BUPT_SICE_ARCHIVE/raw/refs/heads/main/%E5%A4%A7%E4%B8%80%E4%B8%8A/C%2B%2B%20in%20PTA.md)
